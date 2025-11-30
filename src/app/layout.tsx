@@ -7,7 +7,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Scroller from "@/components/scroller";
-import { Cursor, CursorProvider } from "@/components/ui/shadcn-io/animated-cursor";
+import { Toaster } from "@/components/ui/sonner";
 
 const arizonia = Arizonia({
   variable: "--font-arizonia",
@@ -59,10 +59,11 @@ export default function RootLayout({
             id="main-content"
             className="min-h-screen mx-auto max-w-7xl px-4 py-8 lg:pt-18 w-fit"
           >
-              {children}
+            {children}
           </main>
           <Footer />
           <Scroller />
+          <Toaster richColors closeButton />
         </NextJSThemeProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import VanillaTilt from "vanilla-tilt";
-import { ExternalLink, Github, Share2 } from "lucide-react";
+import { Check, Copy, Github, Globe, Share2 } from "lucide-react";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -15,6 +15,7 @@ import {
   EmailShareButton,
   EmailIcon,
 } from "react-share";
+import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import {
@@ -26,7 +27,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
+import {
+  Cursor,
+  CursorFollow,
+  CursorProvider,
+} from "@/components/ui/shadcn-io/animated-cursor";
 
 type RgbTiltCardProps = {
   readonly title: string;
@@ -42,40 +50,38 @@ type RgbTiltCardProps = {
   readonly shareText?: string;
 };
 
-type ActionButtonProps = {
+type IconActionButtonProps = {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
   href?: string;
+  onHoverChange?: (label: string | null) => void;
 };
 
-const ActionButton = ({ icon: Icon, label, href }: ActionButtonProps) => {
-  const commonClasses =
-    "h-10 w-10 md:h-12 md:w-12 lg:h-10 lg:w-10 xl:w-12 xl:h-12 " +
-    "rounded-full inline-flex items-center justify-center cursor-pointer " +
-    "text-foreground/80 " +
-    "shadow-[4px_4px_10px_rgba(0,0,0,0.14),-4px_-4px_10px_rgba(255,255,255,0.85)] " +
-    "dark:shadow-[4px_4px_10px_rgba(0,0,0,0.75),-4px_-4px_10px_rgba(0.35,0.03,265,0.85)] " +
-    "transition-transform duration-150 hover:scale-[1.07] " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-    "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
-
-  const style: React.CSSProperties = {
-    backgroundColor: "rgb(255, 214, 55)",
-  };
-
+const IconActionButton = ({
+  icon: Icon,
+  label,
+  href,
+  onHoverChange,
+}: IconActionButtonProps) => {
   if (!href) return null;
 
   return (
-    <Link
-      href={href}
-      rel="noreferrer"
+    <Button
+      asChild
+      variant="ghost"
+      jellyTone="ghost"
+      size="icon-sm"
+      className="cursor-none rounded-full bg-card/90 hover:bg-card shadow-sm hover:shadow-md"
       aria-label={label}
-      className={commonClasses}
-      style={style}
-      target="_blank"
+      onMouseEnter={() => onHoverChange?.(label)}
+      onMouseLeave={() => onHoverChange?.(null)}
+      onFocus={() => onHoverChange?.(label)}
+      onBlur={() => onHoverChange?.(null)}
     >
-      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-    </Link>
+      <Link href={href} rel="noreferrer" target="_blank">
+        <Icon className="h-[18px] w-[18px] cursor-none" aria-hidden="true" />
+      </Link>
+    </Button>
   );
 };
 
@@ -85,31 +91,76 @@ type LinkRowProps = {
 };
 
 const LinkRow = ({ label, value }: LinkRowProps) => {
-  const handleCopy = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(value).catch(() => {
-        // ignore for now
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = async () => {
+    if (!value) return;
+
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else if (typeof document !== "undefined") {
+        const textArea = document.createElement("textarea");
+        textArea.value = value;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+
+      setCopied(true);
+      toast.success("Link copied", {
+        description: label,
+      });
+
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch (error) {
+      console.error("Copy failed:", error);
+      toast.error("Couldn’t copy link", {
+        description: "Please copy it manually.",
       });
     }
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 rounded-md border bg-muted/40 px-2 py-1">
-      <span className="text-[11px] font-medium text-muted-foreground">
-        {label}
+    <div className="relative flex items-center gap-3 rounded-full border border-border/60 bg-muted/60 px-3 py-1.5 text-xs md:text-sm">
+      <span className="font-medium text-muted-foreground">{label}</span>
+
+      <span className="flex-1 truncate text-[11px] md:text-xs text-muted-foreground text-right pr-3">
+        {value}
       </span>
-      <div className="flex items-center gap-2">
-        <span className="hidden md:inline-block max-w-[180px] truncate text-[11px] text-muted-foreground">
-          {value}
-        </span>
-        <button
+
+      <div className="relative shrink-0">
+        <div
+          className="pointer-events-none absolute inset-0 translate-x-1 translate-y-1 rounded-full bg-accent/20 blur-sm"
+          aria-hidden="true"
+        />
+        <Button
           type="button"
+          size="sm"
+          variant="soft"
           onClick={handleCopy}
-          className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground"
+          className="relative h-7 px-3 text-[10px] uppercase tracking-[0.16em]"
         >
-          Copy
-        </button>
+          {copied ? (
+            <>
+              <Check className="h-3 w-3" aria-hidden="true" />
+              <span className="sr-only md:not-sr-only ml-1">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3 w-3" aria-hidden="true" />
+              <span className="sr-only md:not-sr-only ml-1">Copy</span>
+            </>
+          )}
+        </Button>
       </div>
+
+      <span className="sr-only" aria-live="polite">
+        {copied ? `${label} link copied to clipboard` : ""}
+      </span>
     </div>
   );
 };
@@ -128,6 +179,7 @@ export function RgbTilt3DCard({
   shareText,
 }: RgbTiltCardProps) {
   const cardRef = React.useRef<HTMLDivElement | null>(null);
+  const [hoverLabel, setHoverLabel] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!cardRef.current) return;
@@ -145,9 +197,7 @@ export function RgbTilt3DCard({
     } as any);
 
     return () => {
-      // @ts-expect-error vanillaTilt is injected by the library
       if (node.vanillaTilt) {
-        // @ts-expect-error vanillaTilt is injected by the library
         node.vanillaTilt.destroy();
       }
     };
@@ -157,209 +207,234 @@ export function RgbTilt3DCard({
   const effectiveShareTitle = shareTitle ?? title;
   const effectiveShareText = shareText ?? "Check out this project";
 
-  const shareButtonClasses =
-    "h-10 w-10 md:h-12 md:w-12 lg:h-10 lg:w-10 xl:w-12 xl:h-12 " +
-    "rounded-full inline-flex items-center justify-center cursor-pointer " +
-    "text-foreground/80 " +
-    "shadow-[4px_4px_10px_rgba(0,0,0,0.14),-4px_-4px_10px_rgba(255,255,255,0.85)] " +
-    "dark:shadow-[4px_4px_10px_rgba(0,0,0,0.75),-4px_-4px_10px_rgba(0.35,0.03,265,0.85)] " +
-    "transition-transform duration-150 hover:scale-[1.07] " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-    "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
-
-  const shareButtonStyle: React.CSSProperties = {
-    backgroundColor: "rgb(255, 214, 55)",
-  };
-
   return (
-    <article
-      ref={cardRef}
-      data-tilt
-      className={cn("rgb-card rgb-border h-fit select-none", className)}
-      style={{
-        backgroundColor: "var(--card)",
-        color: "var(--card-foreground)",
-        borderRadius: "var(--rgb-card-border-radius)",
-      }}
-      aria-label={title}
-    >
-      {/* IMAGE AREA */}
-      <div
-        className={cn(
-          "rgb-card-image relative",
-          "bg-gradient-to-br from-primary/90 via-secondary/80 to-accent/80"
-        )}
-        style={
-          imageUrl
-            ? {
-                backgroundImage: `url(${imageUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : undefined
-        }
-      >
-        {/* CURVED TAB BAND */}
-        <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none">
-          <svg
-            viewBox="0 0 400 64"
-            preserveAspectRatio="none"
-            className="block h-full w-full"
-            aria-hidden="true"
+    <div className="relative cursor-none">
+      <CursorProvider>
+        <Cursor variant="brand" />
+
+        <article
+          ref={cardRef}
+          data-tilt
+          className={cn(
+            "rgb-card rgb-border h-fit select-none cursor-none",
+            className
+          )}
+          style={{
+            backgroundColor: "var(--card)",
+            color: "var(--card-foreground)",
+            borderRadius: "var(--rgb-card-border-radius)",
+            transformStyle: "preserve-3d",
+          }}
+          aria-label={title}
+        >
+          <div
+            className={cn(
+              "rgb-card-image relative",
+              !imageUrl &&
+                "bg-linear-to-br from-primary/90 via-secondary/80 to-accent/80"
+            )}
+            style={
+              imageUrl
+                ? {
+                    backgroundImage: `url(${imageUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    transform: "translateZ(0)",
+                  }
+                : { transform: "translateZ(0)" }
+            }
           >
-            <path
-              d="
-                M0 0
-                H170
-                C210 0 210 32 250 32
-                H400
-                V64
-                H0
-                Z
-              "
-              fill="var(--card)"
-              transform="translate(400 0) scale(-1 1)"
-            />
-          </svg>
-        </div>
-
-        {/* ACTION ICONS */}
-        <div className="pointer-events-auto absolute bottom-3 md:bottom-1 lg:bottom-4 xl:bottom-1 right-3 md:right-4 lg:right-3 xl:right-4 flex items-center gap-2">
-          <ActionButton
-            icon={Github}
-            label="View GitHub repository"
-            href={githubUrl}
-          />
-          <ActionButton
-            icon={ExternalLink}
-            label="Open live demo"
-            href={liveUrl}
-          />
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                aria-label="Share project"
-                className={shareButtonClasses}
-                style={shareButtonStyle}
+            <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none">
+              <svg
+                viewBox="0 0 400 64"
+                preserveAspectRatio="none"
+                className="block h-full w-full"
+                aria-hidden="true"
               >
-                <Share2 className="h-[18px] w-[18px]" aria-hidden="true" />
-              </button>
-            </DialogTrigger>
+                <path
+                  d="
+                    M0 0
+                    H170
+                    C210 0 210 32 250 32
+                    H400
+                    V64
+                    H0
+                    Z
+                  "
+                  fill="var(--card)"
+                  transform="translate(400 0) scale(-1 1)"
+                />
+              </svg>
+            </div>
+            
+            <div
+              className="pointer-events-auto absolute bottom-3 lg:bottom-4 xl:bottom-1 right-3 md:right-4 lg:right-3 xl:right-4 flex items-center gap-2"
+              style={{ transform: "translateZ(50px)" }}
+            >
+              <IconActionButton
+                icon={Github}
+                label="View GitHub repository"
+                href={githubUrl}
+                onHoverChange={setHoverLabel}
+              />
+              <IconActionButton
+                icon={Globe}
+                label="Open live demo"
+                href={liveUrl}
+                onHoverChange={setHoverLabel}
+              />
 
-            <DialogContent className="sm:max-w-lg">
-              <DialogHeader>
-                <DialogTitle>Share this project</DialogTitle>
-                <DialogDescription>
-                  Share the live demo and GitHub repo wherever you like.
-                </DialogDescription>
-              </DialogHeader>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    jellyTone="ghost"
+                    size="icon-sm"
+                    className="rounded-full bg-card/90 hover:bg-card shadow-sm hover:shadow-md"
+                    aria-label="Share project"
+                    onMouseEnter={() => setHoverLabel("Share project")}
+                    onMouseLeave={() => setHoverLabel(null)}
+                    onFocus={() => setHoverLabel("Share project")}
+                    onBlur={() => setHoverLabel(null)}
+                  >
+                    <Share2 className="h-[18px] w-[18px] cursor-none" aria-hidden="true" />
+                  </Button>
+                </DialogTrigger>
 
-              <div className="space-y-4">
-                {primaryShareUrl && (
-                  <div className="space-y-2">
-                    <p className="text-xs font-medium text-muted-foreground">
-                      Quick share
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <FacebookShareButton
-                        url={primaryShareUrl}
-                        title={effectiveShareTitle}
-                      >
-                        <FacebookIcon size={32} round />
-                      </FacebookShareButton>
+                <DialogContent className="sm:max-w-lg surface-soft">
+                  <DialogHeader>
+                    <DialogTitle className="text-base md:text-lg">
+                      Share this project
+                    </DialogTitle>
+                    <DialogDescription className="text-xs md:text-sm">
+                      Share the live demo and GitHub repository with others.
+                    </DialogDescription>
+                  </DialogHeader>
 
-                      <TwitterShareButton
-                        url={primaryShareUrl}
-                        title={effectiveShareTitle}
-                      >
-                        <TwitterIcon size={32} round />
-                      </TwitterShareButton>
+                  <div className="space-y-4 text-sm">
+                    {primaryShareUrl && (
+                      <div className="space-y-2">
+                        <p className="text-xs font-medium text-muted-foreground">
+                          Quick share
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <FacebookShareButton
+                            url={primaryShareUrl}
+                            title={effectiveShareTitle}
+                            aria-label="Share on Facebook"
+                          >
+                            <FacebookIcon size={32} round />
+                          </FacebookShareButton>
 
-                      <LinkedinShareButton
-                        url={primaryShareUrl}
-                        title={effectiveShareTitle}
-                        summary={effectiveShareText}
-                        source={primaryShareUrl}
-                      >
-                        <LinkedinIcon size={32} round />
-                      </LinkedinShareButton>
+                          <TwitterShareButton
+                            url={primaryShareUrl}
+                            title={effectiveShareTitle}
+                            aria-label="Share on X / Twitter"
+                          >
+                            <TwitterIcon size={32} round />
+                          </TwitterShareButton>
 
-                      <WhatsappShareButton
-                        url={primaryShareUrl}
-                        title={effectiveShareTitle}
-                        separator=" - "
-                      >
-                        <WhatsappIcon size={32} round />
-                      </WhatsappShareButton>
+                          <LinkedinShareButton
+                            url={primaryShareUrl}
+                            title={effectiveShareTitle}
+                            summary={effectiveShareText}
+                            source={primaryShareUrl}
+                            aria-label="Share on LinkedIn"
+                          >
+                            <LinkedinIcon size={32} round />
+                          </LinkedinShareButton>
 
-                      <EmailShareButton
-                        url={primaryShareUrl}
-                        subject={effectiveShareTitle}
-                        body={effectiveShareText}
-                      >
-                        <EmailIcon size={32} round />
-                      </EmailShareButton>
+                          <WhatsappShareButton
+                            url={primaryShareUrl}
+                            title={effectiveShareTitle}
+                            separator=" - "
+                            aria-label="Share on WhatsApp"
+                          >
+                            <WhatsappIcon size={32} round />
+                          </WhatsappShareButton>
+
+                          <EmailShareButton
+                            url={primaryShareUrl}
+                            subject={effectiveShareTitle}
+                            body={effectiveShareText}
+                            aria-label="Share via Email"
+                          >
+                            <EmailIcon size={32} round />
+                          </EmailShareButton>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Project links
+                      </p>
+                      {liveUrl && <LinkRow label="Live demo" value={liveUrl} />}
+                      {githubUrl && (
+                        <LinkRow label="GitHub repository" value={githubUrl} />
+                      )}
                     </div>
                   </div>
-                )}
 
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">
-                    Project links
-                  </p>
-                  {liveUrl && <LinkRow label="Live demo" value={liveUrl} />}
-                  {githubUrl && (
-                    <LinkRow label="GitHub repo" value={githubUrl} />
-                  )}
-                </div>
-              </div>
+                  <div className="mt-4 flex justify-end">
+                    <DialogClose asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        jellyTone="ghost"
+                        size="sm"
+                        className="text-xs uppercase tracking-[0.16em]"
+                      >
+                        Close
+                      </Button>
+                    </DialogClose>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
 
-              <div className="mt-4 flex justify-end">
-                <DialogClose asChild>
-                  <button
-                    type="button"
-                    className="text-xs uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground"
-                  >
-                    Close
-                  </button>
-                </DialogClose>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-
-      {/* BODY */}
-      <div className="rgb-card-description">
-        <h3 className="rgb-card-title text-lg font-semibold text-primary">
-          {title}
-        </h3>
-
-        {subtitle && (
-          <p className="rgb-card-subtitle mb-1 text-xs md:text-sm text-muted-foreground">
-            {subtitle}
-          </p>
-        )}
-
-        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-          {description}
-        </p>
-
-        {tags && tags.length > 0 && (
-          <div className="mt-3 mb-6 flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
-              >
-                {tag}
-              </span>
-            ))}
+            {hoverLabel && (
+              <CursorFollow align="top-right" sideOffset={18}>
+                <motion.div
+                  initial={{ opacity: 0, y: 4, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 4, scale: 0.96 }}
+                  className="rounded-full border border-border/60 bg-card/95 px-3 py-1 text-xs font-medium text-foreground shadow-md backdrop-blur-sm w-28 bg-linear-to-tr from-primary/60 via-secondary/60 to-accent/60"
+                >
+                  {hoverLabel}
+                </motion.div>
+              </CursorFollow>
+            )}
           </div>
-        )}
-      </div>
-    </article>
+          
+          <div
+            className="rgb-card-description px-2"
+            style={{ transform: "translateZ(50px)" }}
+          >
+            <h3 className="rgb-card-title">{title}</h3>
+
+            {subtitle && <p className="rgb-card-subtitle">{subtitle}</p>}
+
+            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+              {description}
+            </p>
+
+            {tags && tags.length > 0 && (
+              <div className="mt-3 mb-6 flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      </CursorProvider>
+    </div>
   );
 }

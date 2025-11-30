@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CursorFollow, CursorProvider } from "./ui/shadcn-io/animated-cursor";
+import { Cursor, CursorFollow, CursorProvider } from "./ui/shadcn-io/animated-cursor";
 
 const THEME_OPTIONS = [
   { id: "light", label: "Light", icon: Sun },
@@ -48,29 +48,18 @@ const ThemeToggleButton = ({
     aria-checked={isActive}
     className={cn(
       "cursor-none relative rounded-full transition-all",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       isActive
-        ? "text-primary"
-        : "text-muted-foreground hover:text-foreground hover:bg-card/80 hover:shadow-sm"
+        ? "text-primary bg-primary/10 shadow-sm border border-border/70"
+        : "text-muted-foreground hover:bg-card/80 hover:text-foreground",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     )}
   >
-    {isActive && (
-      <motion.span
-        layoutId="theme-pill"
-        className="absolute inset-0 -z-10 rounded-full bg-primary/10 shadow-sm"
-        transition={{
-          type: "spring",
-          stiffness: 260,
-          damping: 20,
-        }}
-      />
-    )}
     <motion.span
       animate={{ scale: isActive ? 1.05 : 1 }}
       transition={{ duration: 0.15 }}
       className="relative z-10"
     >
-      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+      <Icon className="h-4 w-4" aria-hidden="true" />
     </motion.span>
   </Button>
 );
@@ -81,9 +70,7 @@ export default function ThemeToggle() {
   const { theme, setTheme, systemTheme } = useTheme();
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setMounted(true);
-    }, 0);
+    const timeoutId = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -112,7 +99,7 @@ export default function ThemeToggle() {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-8 w-8 rounded-full bg-muted-foreground/15 animate-pulse"
+            className="h-7 w-7 rounded-full bg-muted-foreground/15 animate-pulse"
           />
         ))}
       </div>
@@ -121,7 +108,7 @@ export default function ThemeToggle() {
 
   return (
     <CursorProvider>
-      <div className="relative">
+      <div className="relative ">
         <div
           className={cn(
             "inline-flex items-center gap-1 rounded-full px-1 py-1",

@@ -28,6 +28,7 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.67.0",
     "react-share": "^5.2.2",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "vanilla-tilt": "^1.8.1",
     "zod": "^4.1.13"
