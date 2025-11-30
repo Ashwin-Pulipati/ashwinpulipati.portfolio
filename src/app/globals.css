@@ -13,9 +13,9 @@
   --font-size-2xl: var(--fluid-2xl); /* H2, section titles */
   --font-size-3xl: var(--fluid-3xl); /* H1, hero title */
   --line-height: var(--fluid-line);  /* Universal line-height */
-  --font-sans: var(--font-nunitoSans);
-  --font-mono: var(--font-nunito);
-  --font-display: var(--font-arizonia);
+  --font-sans: var(--font-nunitoSans); /* Body */
+  --font-mono: var(--font-nunito); /* Subheadings */
+  --font-display: var(--font-arizonia); /* Main Headings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -140,6 +140,7 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
 
 @layer components {
   .text-gradient {
@@ -278,6 +279,7 @@
     border-top-left-radius: var(--rgb-card-border-radius);
     border-top-right-radius: var(--rgb-card-border-radius);
     position: relative;
+    
   }
   
   .rgb-card-image::after {
@@ -314,6 +316,7 @@
   .js-tilt-glare {
     border-radius: var(--rgb-card-border-radius);
   }
+  
 
   @media (max-width: 1200px) {
     .rgb-card {

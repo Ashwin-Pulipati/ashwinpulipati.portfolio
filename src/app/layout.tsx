@@ -3,6 +3,10 @@ import { Arizonia, Nunito, Nunito_Sans } from "next/font/google";
 import { ThemeProvider as NextJSThemeProvider } from "next-themes";
 
 import "./globals.css";
+
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import Scroller from "@/components/scroller";
 import { Cursor, CursorProvider } from "@/components/ui/shadcn-io/animated-cursor";
 
 const arizonia = Arizonia({
@@ -50,15 +54,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CursorProvider className="min-h-screen w-full">
-            <main
-              id="main-content"
-              className="mx-auto max-w-7xl px-4 py-8 lg:pt-18 overflow-hidden"
-            >
+          <Header />
+          <main
+            id="main-content"
+            className="min-h-screen mx-auto max-w-7xl px-4 py-8 lg:pt-18 w-fit"
+          >
               {children}
-            </main>
-            <Cursor/>
-          </CursorProvider>
+          </main>
+          <Footer />
+          <Scroller />
         </NextJSThemeProvider>
       </body>
     </html>

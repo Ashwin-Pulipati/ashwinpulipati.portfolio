@@ -1,0 +1,42 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 40 40"
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient
+      id="cursorGradient"
+      x1="0%"
+      y1="0%"
+      x2="100%"
+      y2="100%"
+    >
+      <stop offset="0%" stop-color="rgb(255, 214, 55)" />
+      <stop offset="23%" stop-color="rgb(252, 53, 106)" />
+      <stop offset="46%" stop-color="rgb(218, 58, 160)" />
+      <stop offset="68%" stop-color="rgb(140, 96, 200)" />
+      <stop offset="90%" stop-color="rgb(95, 162, 242)" />
+    </linearGradient>
+
+    <filter
+      id="cursorShadow"
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%"
+    >
+      <feDropShadow
+        dx="0"
+        dy="2"
+        stdDeviation="2.2"
+        flood-color="rgba(0,0,0,0.35)"
+      />
+    </filter>
+  </defs>
+
+  <path
+    d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"
+    fill="url(#cursorGradient)"
+    filter="url(#cursorShadow)"
+  />
+</svg>
