@@ -23,26 +23,18 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow focus-visible:shadow-md",
-
         gradient:
-          "bg-linear-to-br from-primary via-secondary to-accent text-primary-foreground shadow-md hover:opacity-95 hover:shadow-lg active:scale-[0.985]",
-
+          "bg-linear-to-tr from-primary via-secondary to-accent text-primary-foreground shadow-md hover:opacity-95 hover:shadow-lg active:scale-[0.985]",
         soft: "surface-soft text-foreground hover:shadow-md active:shadow-sm",
-
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 focus-visible:ring-destructive/40",
-
         outline:
           "border border-border bg-background/80 text-foreground shadow-xs hover:bg-muted/80 dark:bg-background/60",
-
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-
         accent: "bg-accent text-accent-foreground shadow-xs hover:bg-accent/90",
-
         ghost:
           "bg-transparent text-foreground/80 hover:bg-muted/60 hover:text-foreground",
-
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/90 shadow-none px-0",
       },
       size: {
@@ -75,10 +67,6 @@ type JellyTone =
 type ButtonProps = React.ComponentProps<"button"> &
   ButtonVariants & {
     asChild?: boolean;
-    /**
-     * If set, renders this button in 3D “jelly” style,
-     * with color palette based on the provided tone.
-     */
     jellyTone?: JellyTone;
   };
 
@@ -153,7 +141,7 @@ function JellyButton({
         className
       )}
       whileHover={!isDisabled ? { filter: "brightness(1.04)" } : undefined}
-      transition={{ duration: 0.22, ease: [0.3, 0.7, 0.4, 1.0] }}
+      transition={{ duration: 0.22, ease: [0.3, 0.7, 0.4, 1] }}
     >
       {/* Bottom jelly shadow */}
       <motion.span

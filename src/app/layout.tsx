@@ -57,7 +57,7 @@ export default function RootLayout({
           <Header />
           <main
             id="main-content"
-            className="min-h-screen mx-auto max-w-7xl px-4 py-8 lg:pt-18"
+            className="min-h-screen mx-auto max-w-7xl px-4 py-8 "
           >
             {children}
           </main>

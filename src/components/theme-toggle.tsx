@@ -3,11 +3,15 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { motion } from "framer-motion";
+import { useMedia } from "react-use";
 
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Cursor, CursorFollow, CursorProvider } from "./ui/shadcn-io/animated-cursor";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 
 const THEME_OPTIONS = [
   { id: "light", label: "Light", icon: Sun },
@@ -23,7 +27,7 @@ type ThemeToggleButtonProps = {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isActive: boolean;
   onSelect: (id: ThemeId) => void;
-  onHoverChange?: (label: string | null) => void;
+  reduceMotion: boolean;
 };
 
 const ThemeToggleButton = ({
@@ -32,70 +36,63 @@ const ThemeToggleButton = ({
   Icon,
   isActive,
   onSelect,
-  onHoverChange,
-}: ThemeToggleButtonProps) => (
-  <Button
-    type="button"
-    variant="ghost"
-    size="icon-sm"
-    onClick={() => onSelect(id)}
-    onMouseEnter={() => onHoverChange?.(label)}
-    onMouseLeave={() => onHoverChange?.(null)}
-    onFocus={() => onHoverChange?.(label)}
-    onBlur={() => onHoverChange?.(null)}
-    aria-label={`Switch to ${label} theme`}
-    role="radio"
-    aria-checked={isActive}
-    className={cn(
-      "cursor-none relative rounded-full transition-all",
-      isActive
-        ? "text-primary bg-primary/10 shadow-sm border border-border/70"
-        : "text-muted-foreground hover:bg-card/80 hover:text-foreground",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    )}
-  >
-    <motion.span
-      animate={{ scale: isActive ? 1.05 : 1 }}
-      transition={{ duration: 0.15 }}
-      className="relative z-10"
-    >
-      <Icon className="h-4 w-4" aria-hidden="true" />
-    </motion.span>
-  </Button>
-);
+  reduceMotion,
+}: ThemeToggleButtonProps) => {
+  const commonProps = {
+    type: "button" as const,
+    size: "icon-sm" as const,
+    onClick: () => onSelect(id),
+    "aria-label": `Switch to ${label} theme`,
+    role: "radio" as const,
+    "aria-checked": isActive,
+    className: "rounded-full",
+  };
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        {reduceMotion ? (
+          <Button
+            {...commonProps}
+            variant={isActive ? "gradient" : "ghost"}
+            className={
+              isActive
+                ? "rounded-full shadow-md shadow-primary/30"
+                : "rounded-full text-muted-foreground hover:bg-card/70 hover:text-foreground"
+            }
+          >
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        ) : (
+          <Button {...commonProps} jellyTone={isActive ? "primary" : "ghost"}>
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        )}
+      </TooltipTrigger>
+
+      <TooltipContent
+        side="bottom"
+        className="rounded-full text-xs font-medium"
+      >
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const [hoverLabel, setHoverLabel] = useState<string | null>(null);
   const { theme, setTheme, systemTheme } = useTheme();
+  const reduceMotion = useMedia("(prefers-reduced-motion: reduce)", false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(timeoutId);
+    const id = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(id);
   }, []);
-
-  const currentTheme: ThemeId =
-    (theme as ThemeId) || (systemTheme as ThemeId) || "system";
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-
-    e.preventDefault();
-    const index = THEME_OPTIONS.findIndex((opt) => opt.id === currentTheme);
-    if (index === -1) return;
-
-    const delta = e.key === "ArrowRight" ? 1 : -1;
-    const nextIndex =
-      (index + delta + THEME_OPTIONS.length) % THEME_OPTIONS.length;
-    setTheme(THEME_OPTIONS[nextIndex].id);
-  };
 
   if (!mounted) {
     return (
-      <div
-        className="inline-flex items-center gap-1 rounded-full bg-linear-to-r from-muted/70 via-muted/80 to-muted/70 px-1 py-1 border border-border/60 shadow-sm"
-        aria-hidden="true"
-      >
+      <div className="inline-flex items-center gap-3" aria-hidden="true">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
@@ -106,45 +103,41 @@ export default function ThemeToggle() {
     );
   }
 
-  return (
-    <CursorProvider>
-      <div className="relative ">
-        <div
-          className={cn(
-            "inline-flex items-center gap-1 rounded-full px-1 py-1",
-            "bg-linear-to-r from-background/90 via-card/90 to-background/90",
-            "border border-border/50 shadow-sm",
-            "backdrop-blur-sm supports-backdrop-filter:bg-card/70"
-          )}
-          role="radiogroup"
-          aria-label="Theme selection"
-          onKeyDown={handleKeyDown}
-        >
-          {THEME_OPTIONS.map(({ id, label, icon }) => (
-            <ThemeToggleButton
-              key={id}
-              id={id}
-              label={label}
-              Icon={icon}
-              isActive={currentTheme === id}
-              onSelect={(value) => setTheme(value)}
-              onHoverChange={setHoverLabel}
-            />
-          ))}
-        </div>
+  const currentTheme: ThemeId =
+    (theme as ThemeId) || (systemTheme as ThemeId) || "system";
 
-        {hoverLabel && (
-          <CursorFollow align="bottom" sideOffset={18}>
-            <motion.div
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-full border border-border/60 bg-primary/70 px-2.5 py-1 text-xs font-medium text-foreground shadow-md backdrop-blur-sm"
-            >
-              {hoverLabel}
-            </motion.div>
-          </CursorFollow>
-        )}
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+
+    const index = THEME_OPTIONS.findIndex((opt) => opt.id === currentTheme);
+    const delta = e.key === "ArrowRight" ? 1 : -1;
+    const nextIndex =
+      (index + delta + THEME_OPTIONS.length) % THEME_OPTIONS.length;
+
+    setTheme(THEME_OPTIONS[nextIndex].id);
+  };
+
+  return (
+    <TooltipProvider delayDuration={120}>
+      <div
+        className="inline-flex items-center gap-3"
+        role="radiogroup"
+        aria-label="Theme selection"
+        onKeyDown={handleKeyDown}
+      >
+        {THEME_OPTIONS.map(({ id, label, icon }) => (
+          <ThemeToggleButton
+            key={id}
+            id={id}
+            label={label}
+            Icon={icon}
+            isActive={currentTheme === id}
+            onSelect={(value) => setTheme(value)}
+            reduceMotion={reduceMotion}
+          />
+        ))}
       </div>
-    </CursorProvider>
+    </TooltipProvider>
   );
 }
