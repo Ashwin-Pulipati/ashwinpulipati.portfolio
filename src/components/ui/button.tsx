@@ -178,7 +178,7 @@ function JellyButton({
       {/* Front pill */}
       <motion.span
         className={cn(
-          "relative block rounded-full font-medium shadow-md",
+          "relative block rounded-full font-medium shadow-md w-full",
           "shadow-primary/25",
           frontToneClasses,
           frontSize
