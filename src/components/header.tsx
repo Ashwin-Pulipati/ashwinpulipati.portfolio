@@ -8,7 +8,7 @@ import { useWindowScroll, useMedia, useIdle, useNetworkState } from "react-use";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { FileDown, Handshake, Sparkles } from "lucide-react";
+import { FileDown, Handshake } from "lucide-react";
 
 const HeaderLogo = ({ hideText = false }: { hideText?: boolean }) => (
   <div className="flex items-center gap-2 md:gap-3">

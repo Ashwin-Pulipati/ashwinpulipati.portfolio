@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/config/nav";
 
 import { NavMain } from "@/components/sidebar/nav-main";
-import { NavUser } from "@/components/sidebar/nav-user";
+import { NavFooter } from "@/components/sidebar/nav-footer";
 
 import {
   Sidebar,
@@ -41,7 +41,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   );
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} >
       <SidebarHeader className="mt-4">
         <SidebarTrigger />
       </SidebarHeader>
@@ -51,7 +51,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser />
+        <NavFooter />
       </SidebarFooter>
     </Sidebar>
   );

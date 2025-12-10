@@ -7,6 +7,7 @@ import { useIdle, useMedia } from "react-use";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { GradientBullet } from "@/components/gradient-bullet";
 
 const HERO_TAGS = [
   "AI Platforms",
@@ -16,15 +17,9 @@ const HERO_TAGS = [
   "Games & Web3",
 ] as const;
 
-const GradientBullet = () => (
-  <span
-    className="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full bg-linear-to-tr from-primary via-secondary to-accent shadow-[0_0_4px_rgba(0,0,0,0.25)]"
-    aria-hidden="true"
-  />
-);
-
 const HomeSection = () => {
-  const isDesktop = useMedia("(min-width: 1024px)", false);
+  // UPDATED: Sync logic with CSS breakpoint (1280px)
+  const isDesktop = useMedia("(min-width: 1280px)", false);
   const reduceMotion = useMedia("(prefers-reduced-motion: reduce)", false);
   const isIdle = useIdle(25_000);
 
@@ -36,7 +31,8 @@ const HomeSection = () => {
       aria-labelledby="home-heading"
       className={cn(
         "relative mx-auto flex w-full max-w-7xl flex-col gap-8 pb-12 pt-4",
-        "lg:min-h-[70vh] lg:flex-row lg:items-center lg:gap-10"
+        // UPDATED: Switch from lg: to xl: for layout shift
+        "xl:min-h-[70vh] xl:flex-row xl:items-center xl:gap-10"
       )}
     >
       {/* LEFT COLUMN */}
@@ -61,7 +57,8 @@ const HomeSection = () => {
         <div className="space-y-3 max-w-full">
           <h1
             id="home-heading"
-            className="text-balance text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl"
+            // UPDATED: Removed md:text-5xl. Now it stays 4xl on tablet, jumps to 5xl only on xl.
+            className="text-balance text-3xl font-semibold leading-tight sm:text-4xl xl:text-5xl"
           >
             <span className="block text-gradient">If it runs on code,</span>
             <span className="block text-foreground">
@@ -123,7 +120,7 @@ const HomeSection = () => {
       </div>
 
       {/* RIGHT COLUMN */}
-      <aside className="flex w-full max-w-full flex-1 flex-col gap-4 lg:max-w-lg">
+      <aside className="flex w-full max-w-full flex-1 flex-col gap-4 xl:max-w-lg">
         <div className="surface-soft relative w-full max-w-full overflow-hidden p-4 sm:p-5">
           <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
