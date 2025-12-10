@@ -2,9 +2,9 @@ import type { LucideIcon } from "lucide-react";
 import {
   Home,
   User,
-  Sparkles,
   FolderKanban,
   BriefcaseBusiness,
+  ToolCase,
 } from "lucide-react";
 
 export type NavChild = {
@@ -40,7 +40,7 @@ export const NAV_ITEMS: ReadonlyArray<NavItem> = [
   {
     label: "Expertise",
     href: "/expertise",
-    icon: Sparkles,
+    icon: ToolCase, 
     ariaLabel: "View areas of technical expertise",
     priority: "secondary",
   },
