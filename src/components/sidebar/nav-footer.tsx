@@ -12,8 +12,15 @@ import {
 import ThemeToggle from "../theme-toggle";
 
 export function NavFooter() {
-  const { state, setOpen } = useSidebar();
-  const isCollapsed = state === "collapsed";
+  // UPDATED: Destructure isMobile from the hook
+  const { state, setOpen, isMobile } = useSidebar();
+
+  // UPDATED: Logic change
+  // We only want the "collapsed" (icon-only) view if:
+  // 1. The state is actually collapsed
+  // 2. AND we are NOT on mobile.
+  // (On mobile, the sidebar is a drawer, so it should always look "expanded")
+  const isCollapsed = state === "collapsed" && !isMobile;
 
   if (isCollapsed) {
     return (

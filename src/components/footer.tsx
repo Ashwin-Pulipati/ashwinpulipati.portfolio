@@ -55,7 +55,7 @@ const Footer = () => {
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-col md:flex-row items-center justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs text-muted-foreground text-center"
+            className="flex flex-col lg:flex-row items-center justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs text-muted-foreground text-center"
           >
             {NAV_LINKS.map((item) => (
               <Link
