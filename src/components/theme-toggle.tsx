@@ -64,7 +64,7 @@ const ThemeToggleButton = ({
             <Icon className="h-4 w-4" aria-hidden="true" />
           </Button>
         ) : (
-          <Button {...commonProps} jellyTone={isActive ? "primary" : "ghost"}>
+          <Button {...commonProps} jellyTone={isActive ? "gradient" : "ghost"}>
             <Icon className="h-4 w-4" aria-hidden="true" />
           </Button>
         )}

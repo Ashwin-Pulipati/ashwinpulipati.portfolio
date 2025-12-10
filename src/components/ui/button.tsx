@@ -82,15 +82,14 @@ const jellySizeClasses: Record<ButtonSize, string> = {
 };
 
 const jellyFrontToneClasses: Record<JellyTone, string> = {
-  primary:
-    "bg-linear-to-tr from-primary via-secondary to-accent text-primary-foreground",
+  primary: "bg-primary text-primary-foreground",
   gradient:
     "bg-linear-to-tr from-primary via-secondary to-accent text-primary-foreground",
-  accent: "bg-accent text-accent-foreground",
-  ghost: "bg-background text-foreground border border-border/70 shadow-sm",
-  secondary: "bg-secondary text-secondary-foreground",
+  accent: "bg-accent text-accent-foreground shadow-none!",
+  ghost: "bg-background text-foreground border border-border shadow-none!",
+  secondary: "bg-secondary text-secondary-foreground shadow-none!",
   destructive: "bg-destructive text-destructive-foreground",
-  outline: "bg-background text-foreground border border-border/70",
+  outline: "bg-background text-foreground border border-border shadow-none!",
 };
 
 type JellyButtonProps = Omit<ButtonProps, "asChild" | "variant"> & {
@@ -114,19 +113,37 @@ function JellyButton({
   const frontToneClasses =
     jellyFrontToneClasses[tone] ?? jellyFrontToneClasses.primary;
 
-  const baseGlow =
-    tone === "ghost" || tone === "outline"
-      ? "bg-primary/20"
-      : tone === "accent"
-      ? "bg-accent/25"
-      : "bg-primary/35";
+  const baseGlowMap: Record<JellyTone, string> = {
+    ghost: "bg-foreground/6 dark:bg-foreground/15",
+    outline: "bg-foreground/6 dark:bg-foreground/15",
+    accent: "bg-accent/25 dark:bg-accent/20",
+    primary: "bg-primary/35 dark:bg-primary/25",
+    gradient:
+      "bg-gradient-to-tr from-primary/35 via-secondary/35 to-accent/35 dark:from-primary/20 dark:via-secondary/20 dark:to-accent/20",
+    secondary: "bg-secondary/35 dark:bg-secondary/12",
+    destructive: "bg-primary/35 dark:bg-primary/15",
+  };
 
-  const midLayer =
-    tone === "ghost" || tone === "outline"
-      ? "bg-background"
-      : tone === "accent"
-      ? "bg-accent"
-      : "bg-linear-to-b from-primary via-primary/90 to-primary/80";
+  const midLayerMap: Record<JellyTone, string> = {
+    ghost:
+      "bg-[linear-gradient(to_left,oklch(0.68_0.015_95)_0%,oklch(0.82_0.015_95)_8%,oklch(0.82_0.015_95)_92%,oklch(0.68_0.015_95)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.54_0.015_95)_0%,oklch(0.68_0.015_95)_8%,oklch(0.68_0.015_95)_92%,oklch(0.54_0.015_95)_100%)] brightness-105",
+    outline:
+      "bg-[linear-gradient(to_left,oklch(0.68_0.015_95)_0%,oklch(0.82_0.015_95)_8%,oklch(0.82_0.015_95)_92%,oklch(0.68_0.015_95)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.54_0.015_95)_0%,oklch(0.68_0.015_95)_8%,oklch(0.68_0.015_95)_92%,oklch(0.54_0.015_95)_100%)] brightness-105",
+    accent:
+      "bg-[linear-gradient(to_left,oklch(0.45_0.12_190)_0%,oklch(0.62_0.12_190)_8%,oklch(0.62_0.12_190)_92%,oklch(0.45_0.12_190)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.34_0.12_190)_0%,oklch(0.50_0.12_190)_8%,oklch(0.50_0.12_190)_92%,oklch(0.34_0.12_190)_100%)] brightness-105",
+    primary:
+      "bg-[linear-gradient(to_left,oklch(0.40_0.22_20)_0%,oklch(0.55_0.22_20)_8%,oklch(0.55_0.22_20)_92%,oklch(0.40_0.22_20)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.46_0.22_20)_0%,oklch(0.60_0.22_20)_8%,oklch(0.60_0.22_20)_92%,oklch(0.46_0.22_20)_100%)] brightness-105",
+    gradient:
+      "bg-gradient-to-tr from-[oklch(0.55_0.22_20)] via-[oklch(0.52_0.16_300)] to-[oklch(0.62_0.12_190)] dark:bg-gradient-to-tr from-[oklch(0.42_0.22_20)] via-[oklch(0.39_0.16_300)] to-[oklch(0.49_0.12_190)] brightness-105",
+    secondary:
+      "bg-[linear-gradient(to_left,oklch(0.38_0.16_300)_0%,oklch(0.54_0.16_300)_8%,oklch(0.54_0.16_300)_92%,oklch(0.38_0.16_300)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.27_0.16_300)_0%,oklch(0.42_0.16_300)_8%,oklch(0.42_0.16_300)_92%,oklch(0.27_0.16_300)_100%)] brightness-105",
+    destructive:
+      "bg-[linear-gradient(to_left,oklch(0.36_0.21_28)_0%,oklch(0.52_0.21_28)_8%,oklch(0.52_0.21_28)_92%,oklch(0.36_0.21_28)_100%)] dark:bg-[linear-gradient(to_left,oklch(0.26_0.21_28)_0%,oklch(0.42_0.21_28)_8%,oklch(0.42_0.21_28)_92%,oklch(0.26_0.21_28)_100%)] brightness-105",
+  };
+
+  const baseGlow = baseGlowMap[tone];
+  const midLayer = midLayerMap[tone];
+
 
   return (
     <motion.button

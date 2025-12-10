@@ -168,8 +168,6 @@
   }
 }
 
-
-
 @layer components {
   .text-gradient {
     display: inline-block;
@@ -223,7 +221,6 @@
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
- 
   .rgb-card {
     @apply w-full text-sm text-card-foreground;
     position: relative;
@@ -249,7 +246,7 @@
       8px 8px 20px oklch(0 0 0 / 0.7),
       -6px -6px 16px oklch(0.28 0.03 40 / 0.9);
   }
-  
+
   .rgb-card.rgb-border::after {
     position: absolute;
     content: "";
@@ -298,7 +295,7 @@
       background-position: 0% 50%;
     }
   }
-  
+
   .rgb-card-image {
     grid-area: image;
     background-size: cover;
@@ -307,9 +304,9 @@
     border-top-left-radius: var(--rgb-card-border-radius);
     border-top-right-radius: var(--rgb-card-border-radius);
     position: relative;
-    
+
   }
-  
+
   .rgb-card-image::after {
     content: "";
     position: absolute;
@@ -317,7 +314,7 @@
     pointer-events: none;
     border-radius: var(--rgb-card-border-radius);
   }
-  
+
   .rgb-card-description {
     grid-area: text;
     margin: 2rem 1.75rem 1rem 1.75rem;
@@ -344,7 +341,6 @@
   .js-tilt-glare {
     border-radius: var(--rgb-card-border-radius);
   }
-  
 
   @media (max-width: 1200px) {
     .rgb-card {

@@ -37,8 +37,8 @@ const Footer = () => {
       )}
 
       <div className="mx-auto max-w-7xl px-4 py-6 space-y-4">
-        <div className="flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-col items-center gap-1 md:items-start">
+        <div className="flex flex-col items-center gap-4 xl:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col items-center gap-1 xl:items-start">
             <Link
               href="/"
               aria-label="Back to home"
@@ -55,7 +55,7 @@ const Footer = () => {
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs text-muted-foreground text-center"
+            className="flex flex-col md:flex-row items-center justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs text-muted-foreground text-center"
           >
             {NAV_LINKS.map((item) => (
               <Link
