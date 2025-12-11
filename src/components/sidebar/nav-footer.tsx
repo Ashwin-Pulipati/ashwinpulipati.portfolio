@@ -33,7 +33,7 @@ export function NavFooter() {
             aria-label="Open sidebar and theme settings"
             onClick={() => setOpen(true)}
           >
-            <Settings2 aria-hidden="true" className="text-muted-foreground" />
+            <Settings2 aria-hidden="true" className="text-muted-background" />
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
