@@ -40,7 +40,7 @@ export const NAV_ITEMS: ReadonlyArray<NavItem> = [
   {
     label: "Expertise",
     href: "/expertise",
-    icon: ToolCase, 
+    icon: ToolCase,
     ariaLabel: "View areas of technical expertise",
     priority: "secondary",
   },
@@ -52,19 +52,34 @@ export const NAV_ITEMS: ReadonlyArray<NavItem> = [
     priority: "primary",
     children: [
       {
-        label: "Featured Work",
-        href: "/work/featured",
-        ariaLabel: "View featured work",
+        label: "All Projects",
+        href: "/work",
+        ariaLabel: "View all selected projects",
       },
       {
-        label: "Case Studies",
-        href: "/work/case-studies",
-        ariaLabel: "View detailed case studies",
+        label: "Frontend-heavy",
+        href: "/work?focus=frontend-heavy",
+        ariaLabel: "View frontend-heavy projects",
       },
       {
-        label: "Open Source",
-        href: "/work/open-source",
-        ariaLabel: "View open source contributions",
+        label: "Backend-heavy",
+        href: "/work?focus=backend-heavy",
+        ariaLabel: "View backend-heavy projects",
+      },
+      {
+        label: "Full-stack",
+        href: "/work?focus=full-stack",
+        ariaLabel: "View full-stack projects",
+      },
+      {
+        label: "DevOps / Data",
+        href: "/work?focus=devops",
+        ariaLabel: "View DevOps and data projects",
+      },
+      {
+        label: "Games & Web3",
+        href: "/work?focus=games-web3",
+        ariaLabel: "View game and Web3 experiments",
       },
     ],
   },
