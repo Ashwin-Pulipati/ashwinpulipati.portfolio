@@ -482,8 +482,16 @@ function CollaborationNote() {
 }
 
 export default function ExpertisePage() {
+  const prefersReducedMotion = useMedia(
+    "(prefers-reduced-motion: reduce)",
+    false
+  );
   return (
-    <main id="main-content" className="space-y-10 md:space-y-12 lg:space-y-14">
+    <main
+      id="main-content"
+      className={cn("space-y-10 md:space-y-12 lg:space-y-14 animate-in fade-in slide-in-from-bottom-4 duration-700", !prefersReducedMotion &&
+        "animate-in fade-in slide-in-from-bottom-4 duration-700")}
+    >
       <ExpertiseIntro />
       <TracksGrid />
       <ToolsAndCapabilities />

@@ -80,7 +80,7 @@ const IconActionButton = React.memo(function IconActionButtonBase({
           variant="ghost"
           jellyTone="ghost"
           size="icon-sm"
-          className=" rounded-full bg-card/90 hover:bg-card shadow-sm hover:shadow-md"
+          className="rounded-full text-muted-foreground hover:bg-card/70 hover:text-foreground"
           aria-label={label}
         >
           <Link href={href} rel="noreferrer" target="_blank">
@@ -91,7 +91,7 @@ const IconActionButton = React.memo(function IconActionButtonBase({
       <TooltipContent
         side="bottom"
         sideOffset={6}
-        className="hidden sm:block rounded-full border border-border/60 bg-card px-3 py-1 text-[11px] font-medium text-foreground shadow-md"
+        className="hidden sm:block rounded-full text-xs font-medium"
       >
         {label}
       </TooltipContent>
@@ -106,47 +106,40 @@ const LinkRow = React.memo(function LinkRowBase({
   const { copied, copy } = useSmartClipboard();
 
   return (
-    <div className="relative w-full overflow-hidden rounded-full border border-border/60 bg-muted/70">
-      <div
-        className={cn(
-          "grid w-full items-center gap-2 px-3 py-1.5 text-xs md:text-sm",
-          "grid-cols-[minmax(0,1.1fr)_minmax(0,2fr)_auto]"
-        )}
-      >
-        <span className="truncate font-medium text-muted-foreground">
-          {label}
-        </span>
+    <div className="flex w-full items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/70 px-3 py-1.5 text-xs md:text-sm">
+      <div className="flex min-w-0 flex-col text-muted-foreground">
+        <span className="font-medium">{label}</span>
 
-        <span className="min-w-0 truncate text-[11px] md:text-xs text-muted-foreground text-right md:text-left md:px-1">
+        <span
+          className={cn(
+            "text-[11px] md:text-xs text-muted-foreground",
+            "text-wrap balance wrap=break-words leading-snug",
+            "max-w-full"
+          )}
+        >
           {value}
         </span>
-
-        <div className="relative justify-self-end">
-          <div
-            className="pointer-events-none absolute inset-0 rounded-full bg-accent/14 blur-[5px]"
-            aria-hidden="true"
-          />
-          <Button
-            type="button"
-            size="sm"
-            variant="soft"
-            onClick={() => copy(value, label)}
-            className="relative h-7 px-3 text-[10px] uppercase tracking-[0.16em]"
-          >
-            {copied ? (
-              <>
-                <Check className="h-3 w-3" aria-hidden="true" />
-                <span className="sr-only md:not-sr-only ml-1">Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-3 w-3" aria-hidden="true" />
-                <span className="sr-only md:not-sr-only ml-1">Copy</span>
-              </>
-            )}
-          </Button>
-        </div>
       </div>
+
+      <Button
+        type="button"
+        size="sm"
+        jellyTone="ghost"
+        onClick={() => copy(value, label)}
+        className="text-[10px] uppercase tracking-[0.16em]"
+      >
+        {copied ? (
+          <div className="flex items-center gap-2">
+            <Check className="h-3 w-3" aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">Copied</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Copy className="h-3 w-3" aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">Copy</span>
+          </div>
+        )}
+      </Button>
 
       <span className="sr-only" aria-live="polite">
         {copied ? `${label} link copied to clipboard` : ""}
@@ -261,7 +254,7 @@ export function RgbTilt3DCard({
           className={cn(
             "rgb-card-image relative w-full",
             !imageUrl &&
-              "bg-linear-to-br from-primary/90 via-secondary/80 to-accent/80"
+              "bg-linear-to-br from-primary/90 via-secondary/80 to-accent/80 "
           )}
           style={
             imageUrl
@@ -294,7 +287,7 @@ export function RgbTilt3DCard({
                       variant="ghost"
                       jellyTone="ghost"
                       size="icon-sm"
-                      className=" rounded-full bg-card/90 hover:bg-card shadow-sm hover:shadow-md"
+                      className="rounded-full text-muted-foreground hover:bg-card/70 hover:text-foreground"
                       aria-label="Share project"
                     >
                       <Share2
@@ -307,7 +300,7 @@ export function RgbTilt3DCard({
                 <TooltipContent
                   side="bottom"
                   sideOffset={6}
-                  className="hidden sm:block rounded-full border border-border/60 bg-card px-3 py-1 text-[11px] font-medium text-foreground shadow-md"
+                  className="hidden sm:block rounded-full text-xs font-medium"
                 >
                   Share project
                 </TooltipContent>

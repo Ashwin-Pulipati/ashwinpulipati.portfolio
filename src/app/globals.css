@@ -268,7 +268,7 @@
     inset: -3px;
     animation: rgb-border 8s linear infinite;
     border-radius: var(--rgb-card-border-radius);
-    filter: blur(8px);
+    filter: blur(5px);
     z-index: -1;
     transform: translateZ(-1px);
     opacity: 0.75;
@@ -304,7 +304,6 @@
     border-top-left-radius: var(--rgb-card-border-radius);
     border-top-right-radius: var(--rgb-card-border-radius);
     position: relative;
-
   }
 
   .rgb-card-image::after {
