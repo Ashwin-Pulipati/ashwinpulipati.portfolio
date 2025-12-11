@@ -84,7 +84,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                             "size-5",
                             item.isActive
                               ? "text-sidebar-accent-foreground"
-                              : "text-muted-foreground"
+                              : "text-muted-background"
                           )}
                         />
                       )}
@@ -125,7 +125,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                             "size-5",
                             item.isActive
                               ? "text-sidebar-accent-foreground"
-                              : "text-muted-foreground"
+                              : "text-muted-background"
                           )}
                         />
                       )}
@@ -140,7 +140,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                       <ChevronRight
                         aria-hidden="true"
                         className={cn(
-                          "ml-auto size-4 text-muted-foreground",
+                          "ml-auto size-4 text-muted-background",
                           "transition-transform duration-200",
                           "group-data-[state=open]/collapsible:rotate-90"
                         )}

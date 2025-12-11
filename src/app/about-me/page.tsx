@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Github, Linkedin, Sparkles } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin} from "lucide-react";
 import { useIdle, useMedia } from "react-use";
 
 import { Button } from "@/components/ui/button";
@@ -238,7 +238,10 @@ const CenterHeroTile = ({ ctaLabel }: { ctaLabel: string }) => (
               rel="noreferrer noopener"
               className="flex items-center justify-center gap-2"
             >
-              <Linkedin className="h-4 w-4" aria-hidden="true" />
+              <Linkedin
+                className="h-4 w-4 text-blue-800 dark:text-blue-500"
+                aria-hidden="true"
+              />
               <span>LinkedIn</span>
             </Link>
           </Button>
