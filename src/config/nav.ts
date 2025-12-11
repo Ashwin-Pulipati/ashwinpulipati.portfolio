@@ -5,6 +5,7 @@ import {
   FolderKanban,
   BriefcaseBusiness,
   ToolCase,
+  Handshake,
 } from "lucide-react";
 
 export type NavChild = {
@@ -89,5 +90,12 @@ export const NAV_ITEMS: ReadonlyArray<NavItem> = [
     icon: BriefcaseBusiness,
     ariaLabel: "View professional experience",
     priority: "secondary",
+  },
+  {
+    label: "Hire Me",
+    href: "/hire-me",
+    icon: Handshake,
+    ariaLabel: "Contact me for opportunities",
+    priority: "primary",
   },
 ] as const;
