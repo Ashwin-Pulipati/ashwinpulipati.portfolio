@@ -3,16 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useWindowScroll, useMedia, useIdle, useNetworkState } from "react-use";
+import { useIdle, useMedia, useNetworkState, useWindowScroll } from "react-use";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { FileDown, Handshake } from "lucide-react";
+import { SidebarNavLink } from "@/components/ui/sidebar-nav-link";
+import { NAV_ITEMS } from "@/config/nav";
+import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
 const HeaderLogo = ({ hideText = false }: { hideText?: boolean }) => (
   <div className="flex items-center gap-2 md:gap-3">
-    <div className="relative h-10 w-10 md:h-20 md:w-20 shrink-0">
+    <div className="relative h-10 w-10 md:h-19 md:w-19 shrink-0">
       <Image
         src="/logo.png"
         alt="Ashwin Pulipati logo"
@@ -47,10 +49,6 @@ const Header = () => {
   const isIdle = useIdle(60_000);
   const { online } = useNetworkState();
 
-  const isActive = (href: string) => pathname.startsWith(href);
-  const isResumeActive = isActive("/resume");
-  const isHireMeActive = isActive("/hire-me");
-
   const headerTransition = prefersReducedMotion
     ? ""
     : "transition-[box-shadow,background-color,border-color] duration-300";
@@ -69,6 +67,11 @@ const Header = () => {
   );
 
   const hideLogoText = isMdOnly && isSidebarExpanded;
+
+  const headerLinks = useMemo(() => {
+    const wanted = new Set(["Resume", "Hire Me"]);
+    return NAV_ITEMS.filter((i) => wanted.has(i.label));
+  }, []);
 
   return (
     <>
@@ -110,46 +113,48 @@ const Header = () => {
 
             <div className="flex items-center gap-3">
               <nav aria-label="Primary actions" className={ctaShellClasses}>
-                <Button
-                  asChild
-                  variant="outline"
-                  jellyTone="ghost"
-                  size="sm"
-                  className={cn(
-                    "tracking-[0.12em] uppercase text-sm flex items-center gap-2",
-                    "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                    isResumeActive && "bg-muted/60 border-border/80"
-                  )}
-                >
-                  <Link
-                    href="/resume"
-                    aria-current={isResumeActive ? "page" : undefined}
-                    className="flex items-center gap-2"
-                  >
-                    <FileDown className="h-4 w-4" aria-hidden="true" />
-                    <span>Resume</span>
-                  </Link>
-                </Button>
-                
-                <Button
-                  asChild
-                  jellyTone="gradient"
-                  size="sm"
-                  className={cn(
-                    "tracking-[0.12em] uppercase text-sm flex items-center gap-2", 
-                    "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                    isHireMeActive && "brightness-105"
-                  )}
-                >
-                  <Link
-                    href="/hire-me"
-                    aria-current={isHireMeActive ? "page" : undefined}
-                    className="flex items-center gap-2"
-                  >
-                    <Handshake className="h-4 w-4" aria-hidden="true" />
-                    <span>Hire Me</span>
-                  </Link>
-                </Button>
+                {headerLinks.map((item) => {
+                  const Icon = item.icon;
+
+                  const isActive = item.download
+                    ? false
+                    : pathname.startsWith(item.href);
+
+                  const isHireMe = item.label === "Hire Me";
+
+                  return (
+                    <Button
+                      key={item.href}
+                      asChild
+                      variant={isHireMe ? undefined : "outline"}
+                      jellyTone={isHireMe ? "gradient" : "ghost"}
+                      size="sm"
+                      className={cn(
+                        "tracking-[0.12em] uppercase text-sm flex items-center gap-2",
+                        "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                        isActive &&
+                          !item.download &&
+                          "bg-muted/60 border-border/80",
+                        isHireMe && isActive && "brightness-105"
+                      )}
+                    >
+                      <SidebarNavLink
+                        href={item.href}
+                        download={item.download}
+                        className="flex items-center gap-2"
+                        ariaLabel={item.ariaLabel ?? item.label}
+                        aria-current={
+                          !item.download && isActive ? "page" : undefined
+                        }
+                      >
+                        {Icon && (
+                          <Icon className="h-4 w-4" aria-hidden="true" />
+                        )}
+                        <span>{item.label}</span>
+                      </SidebarNavLink>
+                    </Button>
+                  );
+                })}
               </nav>
 
               <div className="md:hidden pt-2.5">

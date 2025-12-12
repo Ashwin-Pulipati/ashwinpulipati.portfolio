@@ -6,12 +6,14 @@ import {
   BriefcaseBusiness,
   ToolCase,
   Handshake,
+  FileDown,
 } from "lucide-react";
 
 export type NavChild = {
   label: string;
   href: string;
   ariaLabel?: string;
+  download?: boolean;
 };
 
 export type NavItem = {
@@ -21,6 +23,7 @@ export type NavItem = {
   ariaLabel?: string;
   children?: ReadonlyArray<NavChild>;
   priority?: "primary" | "secondary";
+  download?: boolean;
 };
 
 export const NAV_ITEMS: ReadonlyArray<NavItem> = [
@@ -91,6 +94,16 @@ export const NAV_ITEMS: ReadonlyArray<NavItem> = [
     ariaLabel: "View professional experience",
     priority: "secondary",
   },
+  
+  {
+    label: "Resume",
+    href: "/Ashwin_Pulipati_Resume.pdf",
+    icon: FileDown,
+    ariaLabel: "Download resume as PDF",
+    priority: "secondary",
+    download: true,
+  },
+
   {
     label: "Hire Me",
     href: "/hire-me",

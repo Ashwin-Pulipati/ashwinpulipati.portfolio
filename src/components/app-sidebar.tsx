@@ -31,12 +31,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           url: item.href,
           icon: item.icon,
           isActive: isItemActive,
+          download: item.download,
           items: item.children?.map((child) => ({
             title: child.label,
             url: child.href,
             isActive: pathname === child.href,
+            download: child.download,
           })),
         };
+
       }),
     [pathname]
   );

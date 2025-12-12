@@ -1,13 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, FileText, Terminal } from "lucide-react";
+import Link from "next/link";
 import { useIdle, useMedia } from "react-use";
 
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { GradientBullet } from "@/components/gradient-bullet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { SidebarNavLink } from "@/components/ui/sidebar-nav-link";
+import { NAV_ITEMS } from "@/config/nav";
+import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
 const HERO_TAGS = [
   "AI Platforms",
@@ -23,6 +26,11 @@ const HomeSection = () => {
   const isIdle = useIdle(25_000);
 
   const primaryCtaLabel = isIdle ? "Jump back into my work" : "Explore my work";
+
+  const resumeItem = useMemo(
+    () => NAV_ITEMS.find((i) => i.label === "Resume"),
+    []
+  );
 
   return (
     <section
@@ -90,15 +98,20 @@ const HomeSection = () => {
             asChild
             jellyTone="ghost"
             size={isDesktop ? "lg" : "default"}
-            aria-label="Open Ashwin's résumé"
+            aria-label="Download Ashwin's résumé"
             className="w-full md:w-auto"
           >
-            <Link href="/resume">
-              <span className="flex items-center justify-center gap-2">
-                <FileText className="h-4 w-4" aria-hidden />
-                <span>View résumé</span>
+            <SidebarNavLink
+              href={resumeItem?.href ?? "/resume"}
+              download={resumeItem?.download}
+              ariaLabel={resumeItem?.ariaLabel ?? "Download Ashwin's résumé"}
+              className="flex items-center justify-center gap-2"
+            >
+              <FileText className="h-4 w-4 shrink-0" aria-hidden />
+              <span>
+                {resumeItem?.download ? "Download résumé" : "View résumé"}
               </span>
-            </Link>
+            </SidebarNavLink>
           </Button>
         </div>
 
@@ -114,7 +127,7 @@ const HomeSection = () => {
           ))}
         </div>
       </div>
-      
+
       <aside className="flex w-full max-w-full flex-1 flex-col gap-4 xl:max-w-lg">
         <div className="surface-soft relative w-full max-w-full overflow-hidden p-4 sm:p-5">
           <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">

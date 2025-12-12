@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ChevronRight, type LucideIcon } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import * as React from "react";
 import { useIdle, useMedia } from "react-use";
 
 import {
@@ -22,6 +21,8 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+
+import { SidebarNavLink } from "@/components/ui/sidebar-nav-link";
 import { cn } from "@/lib/utils";
 
 type NavMainItem = {
@@ -29,10 +30,12 @@ type NavMainItem = {
   url: string;
   icon?: LucideIcon;
   isActive?: boolean;
+  download?: boolean;
   items?: {
     title: string;
     url: string;
     isActive?: boolean;
+    download?: boolean;
   }[];
 };
 
@@ -73,21 +76,39 @@ type ComputedNavItem = NavMainItem & {
   basePath: string;
   hasChildren: boolean;
   isActive: boolean;
-  items: { title: string; url: string; isActive: boolean }[];
+  items: {
+    title: string;
+    url: string;
+    isActive: boolean;
+    download?: boolean;
+  }[];
 };
 
-const NavRow = React.memo(function NavRow({
-  item,
-  onCollapsedNavigate,
-}: {
-  item: ComputedNavItem;
-  onCollapsedNavigate: (url: string) => void;
-}) {
+const NavRow = React.memo(function NavRow({ item }: { item: ComputedNavItem }) {
   const { state, setOpen } = useSidebar();
   const router = useRouter();
   const Icon = item.icon;
 
   if (!item.hasChildren) {
+    const content = (
+      <>
+        {Icon && (
+          <Icon
+            aria-hidden="true"
+            className={cn(
+              "size-5",
+              item.isActive
+                ? "text-sidebar-accent-foreground"
+                : "text-muted-foreground"
+            )}
+          />
+        )}
+        <span className={cn("text-md", item.isActive && "font-semibold")}>
+          {item.title}
+        </span>
+      </>
+    );
+
     return (
       <SidebarMenuItem>
         <SidebarMenuButton
@@ -99,26 +120,15 @@ const NavRow = React.memo(function NavRow({
             "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           )}
         >
-          <Link
+          <SidebarNavLink
             href={item.url}
+            download={item.download}
             className="flex items-center gap-2"
-            aria-current={item.isActive ? "page" : undefined}
+            ariaLabel={item.title}
+            aria-current={!item.download && item.isActive ? "page" : undefined}
           >
-            {Icon && (
-              <Icon
-                aria-hidden="true"
-                className={cn(
-                  "size-5",
-                  item.isActive
-                    ? "text-sidebar-accent-foreground"
-                    : "text-muted-foreground"
-                )}
-              />
-            )}
-            <span className={cn("text-md", item.isActive && "font-semibold")}>
-              {item.title}
-            </span>
-          </Link>
+            {content}
+          </SidebarNavLink>
         </SidebarMenuButton>
       </SidebarMenuItem>
     );
@@ -139,10 +149,7 @@ const NavRow = React.memo(function NavRow({
               if (state === "collapsed") {
                 e.preventDefault();
                 setOpen(true);
-                // keep original behavior: open sidebar then navigate
                 setTimeout(() => router.push(item.url), 150);
-                // or use the provided callback:
-                // onCollapsedNavigate(item.url);
               }
             }}
             className={cn(
@@ -187,13 +194,17 @@ const NavRow = React.memo(function NavRow({
                     "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   )}
                 >
-                  <Link
+                  <SidebarNavLink
                     href={subItem.url}
-                    aria-current={subItem.isActive ? "page" : undefined}
+                    download={subItem.download}
                     className="flex items-center gap-2"
+                    ariaLabel={subItem.title}
+                    aria-current={
+                      !subItem.download && subItem.isActive ? "page" : undefined
+                    }
                   >
                     <span className="text-sm">{subItem.title}</span>
-                  </Link>
+                  </SidebarNavLink>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ))}
@@ -209,9 +220,6 @@ export const NavMain = React.memo(function NavMain({
 }: {
   readonly items: NavMainItem[];
 }) {
-  const { state, setOpen } = useSidebar();
-  const router = useRouter();
-
   const prefersReducedMotion = useMedia(
     "(prefers-reduced-motion: reduce)",
     false
@@ -231,15 +239,23 @@ export const NavMain = React.memo(function NavMain({
       const basePath = item.url.split("?")[0];
       const hasChildren = !!item.items?.length;
 
-      let itemIsActive = pathname === basePath;
+      let itemIsActive = item.download ? false : false;
+
+      if (!hasChildren) {
+        itemIsActive =
+          !item.download &&
+          (pathname === basePath ||
+            (basePath !== "/" && pathname.startsWith(basePath)));
+      }
 
       const computedChildren =
         item.items?.map((sub) => {
           const childBasePath = sub.url.split("?")[0];
-
           let subIsActive = false;
 
-          if (basePath === "/work") {
+          if (sub.download) {
+            subIsActive = false;
+          } else if (basePath === "/work") {
             const subFocus = getFocusFromHref(sub.url);
             subIsActive = pathname === "/work" && subFocus === currentFocus;
           } else {
@@ -252,8 +268,16 @@ export const NavMain = React.memo(function NavMain({
             title: sub.title,
             url: sub.url,
             isActive: subIsActive,
+            download: sub.download,
           };
         }) ?? [];
+
+      if (hasChildren && !item.download) {
+        const parentPathMatch =
+          pathname === basePath ||
+          (basePath !== "/" && pathname.startsWith(basePath));
+        itemIsActive = itemIsActive || parentPathMatch;
+      }
 
       return {
         ...item,
@@ -264,18 +288,6 @@ export const NavMain = React.memo(function NavMain({
       };
     });
   }, [items, pathname, currentFocus]);
-
-  const handleCollapsedNavigate = React.useCallback(
-    (url: string) => {
-      if (state === "collapsed") {
-        setOpen(true);
-        setTimeout(() => router.push(url), 150);
-      } else {
-        router.push(url);
-      }
-    },
-    [router, setOpen, state]
-  );
 
   return (
     <nav aria-label="Primary navigation">
@@ -293,11 +305,7 @@ export const NavMain = React.memo(function NavMain({
 
         <SidebarMenu className="mt-1.5 space-y-0.5">
           {computedItems.map((item) => (
-            <NavRow
-              key={item.title}
-              item={item}
-              onCollapsedNavigate={handleCollapsedNavigate}
-            />
+            <NavRow key={item.title} item={item} />
           ))}
         </SidebarMenu>
       </SidebarGroup>

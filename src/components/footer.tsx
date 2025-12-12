@@ -1,7 +1,7 @@
 "use client";
 
+import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import Link from "next/link";
-import { Github, Linkedin, ArrowUpRight } from "lucide-react";
 import { useMedia } from "react-use";
 
 import { Button } from "@/components/ui/button";
@@ -11,17 +11,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { NAV_ITEMS } from "@/config/nav";
 
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Me", href: "/about-me" },
-  { label: "Expertise", href: "/expertise" },
-  { label: "Work", href: "/work" },
-  { label: "Experience", href: "/experience" },
-  { label: "Resume", href: "/resume" },
-  { label: "Hire Me", href: "/hire-me" },
-] as const;
+import { SidebarNavLink } from "@/components/ui/sidebar-nav-link";
+import { cn } from "@/lib/utils";
 
 const Footer = () => {
   const reduceMotion = useMedia("(prefers-reduced-motion: reduce)", false);
@@ -55,35 +48,44 @@ const Footer = () => {
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-col lg:flex-row items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground text-center" 
+            className="flex flex-col lg:flex-row items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground text-center"
           >
-            {NAV_LINKS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "group relative inline-flex items-center justify-center rounded-full px-2 py-0.5",
-                  "transition-colors hover:text-foreground",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                )}
-              >
+            {NAV_ITEMS.map((item) => {
+              const commonClassName = cn(
+                "group relative inline-flex items-center justify-center rounded-full px-2 py-0.5",
+                "transition-colors hover:text-foreground",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              );
+
+              const content = (
                 <span className="relative inline-block tracking-[0.08em] uppercase">
                   {item.label}
-
                   <span
                     className="
-            pointer-events-none
-            absolute left-0 -bottom-0.5 h-0.5 w-full
-            origin-left scale-x-0
-            bg-linear-to-r from-primary via-secondary to-accent
-            transition-transform duration-300 ease-out
-            group-hover:scale-x-100
-            motion-reduce:scale-x-100 motion-reduce:bg-muted-foreground
-          "
+          pointer-events-none
+          absolute left-0 -bottom-0.5 h-0.5 w-full
+          origin-left scale-x-0
+          bg-linear-to-r from-primary via-secondary to-accent
+          transition-transform duration-300 ease-out
+          group-hover:scale-x-100
+          motion-reduce:scale-x-100 motion-reduce:bg-muted-foreground
+        "
                   />
                 </span>
-              </Link>
-            ))}
+              );
+
+              return (
+                <SidebarNavLink
+                  key={item.href}
+                  href={item.href}
+                  download={item.download}
+                  ariaLabel={item.ariaLabel}
+                  className={commonClassName}
+                >
+                  {content}
+                </SidebarNavLink>
+              );
+            })}
           </nav>
 
           <TooltipProvider delayDuration={120}>
