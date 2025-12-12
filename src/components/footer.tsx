@@ -100,7 +100,7 @@ const Footer = () => {
                       <span className="flex items-center gap-1 text-xs md:text-sm">
                         <span>Let&apos;s work together</span>
                         <ArrowUpRight
-                          className="h-3.5 w-3.5"
+                          className="h-3.5 w-3.5 shrink-0"
                           aria-hidden="true"
                         />
                       </span>
@@ -125,7 +125,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <Github className="h-4 w-4" aria-hidden="true" />
+                      <Github className="h-4 w-4 text-zinc-600 dark:text-zinc-400 shrink-0" aria-hidden="true" />
                     </Link>
                   </Button>
                 </TooltipTrigger>
@@ -147,7 +147,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <Linkedin className="h-4 w-4 text-blue-800 dark:text-blue-500" aria-hidden="true" />
+                      <Linkedin className="h-4 w-4 text-blue-500 dark:text-blue-400 shrink-0" aria-hidden="true" />
                     </Link>
                   </Button>
                 </TooltipTrigger>

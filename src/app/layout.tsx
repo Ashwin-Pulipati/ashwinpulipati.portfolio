@@ -63,7 +63,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <main
                 id="main-content"
                 role="main"
-                // UPDATED: Added responsive padding (sm:px-6 lg:px-8) to prevent clipping
                 className="mx-auto flex w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8 py-8"
               >
                 {children}
@@ -71,9 +70,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Footer />
             </SidebarInset>
           </SidebarProvider>
-
           <Scroller />
-          <Toaster richColors closeButton />
+          <Toaster richColors closeButton position="top-right" />
         </NextJSThemeProvider>
       </body>
     </html>

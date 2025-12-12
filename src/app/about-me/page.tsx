@@ -220,7 +220,10 @@ const CenterHeroTile = ({ ctaLabel }: { ctaLabel: string }) => (
               rel="noreferrer noopener"
               className="flex items-center justify-center gap-2"
             >
-              <Github className="h-4 w-4" aria-hidden="true" />
+              <Github
+                className="h-4 w-4 text-zinc-600 dark:text-zinc-400"
+                aria-hidden="true"
+              />
               <span>GitHub</span>
             </Link>
           </Button>
@@ -239,7 +242,7 @@ const CenterHeroTile = ({ ctaLabel }: { ctaLabel: string }) => (
               className="flex items-center justify-center gap-2"
             >
               <Linkedin
-                className="h-4 w-4 text-blue-800 dark:text-blue-500"
+                className="h-4 w-4 text-blue-500 dark:text-blue-400"
                 aria-hidden="true"
               />
               <span>LinkedIn</span>
