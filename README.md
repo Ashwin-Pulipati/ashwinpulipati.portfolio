@@ -20,7 +20,7 @@ This project is a modern, responsive, and interactive personal portfolio. It's d
 
 This project is built with a modern tech stack that ensures a great developer experience, scalability, and a beautiful user interface.
 
-*   **Framework:** [Next.js](https://nextjs.org/)
+*   **Frameworks:** [React](https://react.dev/), [Next.js](https://nextjs.org/)
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **UI Components:** [Shadcn/UI](https://ui.shadcn.com/)
