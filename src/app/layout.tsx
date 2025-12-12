@@ -33,9 +33,37 @@ const nunitoSans = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ashwin Pulipati Portfolio",
+  title: {
+    default: "Ashwin Pulipati",
+    template: `%s - Ashwin Pulipati`,
+  },
   description:
-    "The portfolio of Ashwin Pulipati - building modern, scalable software across the stack. If it runs on code, I build it.",
+    "The official portfolio of Ashwin Pulipati – a software engineer specializing in building modern, scalable web applications and innovative solutions. Explore projects, experience, and expertise.",
+  keywords: [
+    "Ashwin Pulipati",
+    "portfolio",
+    "software engineer",
+    "web development",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "full-stack",
+    "frontend",
+    "backend",
+  ],
+  authors: [
+    { name: "Ashwin Pulipati", url: "https://github.com/Ashwin-Pulipati" },
+  ],
+  creator: "Ashwin Pulipati",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://ashwinpulipati.vercel.app/",
+    title: "Ashwin Pulipati's Portfolio",
+    description:
+      "The official portfolio of Ashwin Pulipati – a software engineer specializing in building modern, scalable web applications and innovative solutions. Explore projects, experience, and expertise.",
+    siteName: "Ashwin Pulipati's Portfolio",
+  },
 };
 
 type RootLayoutProps = {
