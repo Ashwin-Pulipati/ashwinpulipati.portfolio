@@ -43,7 +43,7 @@ export function ContactSection({
     }
   );
 
-  const [{ value: clipboardValue }, copyToClipboard] = useCopyToClipboard();
+  const [, copyToClipboard] = useCopyToClipboard();
   const [justCopied, setJustCopied] = useState(false);
 
   const state: ContactFormState = formState ?? {
@@ -188,19 +188,8 @@ export function ContactSection({
       setSubmitting(false);
     }
   };
-
-  const emailBody = useMemo(
-    () => buildEmailBody(),
-    [
-      opportunityLabel,
-      state.company,
-      state.contactLink,
-      state.email,
-      state.message,
-      state.name,
-      state.roleTitle,
-    ]
-  );
+  
+  const emailBody = useMemo(() => buildEmailBody(), []);
 
   return (
     <>

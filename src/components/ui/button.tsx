@@ -249,7 +249,7 @@ function Button({
     );
   }
 
-  const Comp = asChild ? Slot : "button";
+  const Comp: any = asChild ? Slot : "button";
 
   return (
     <Comp

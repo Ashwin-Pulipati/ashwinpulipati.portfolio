@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export function useSmartClipboard(timeout = 1600) {
   const [copied, setCopied] = useState(false);
-  const [clipboardState, copyToClipboard] = useCopyToClipboard();
+  const [clipboardState, ] = useCopyToClipboard();
 
   const [, cancelReset, resetTimer] = useTimeoutFn(() => {
     setCopied(false);
@@ -16,8 +16,6 @@ export function useSmartClipboard(timeout = 1600) {
     if (!value) return;
 
     cancelReset();
-
-    const result = copyToClipboard(value);
 
     if (clipboardState.error) {
       toast.error("Couldn’t copy link", {
