@@ -47,7 +47,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={mappedItems} />
+        <React.Suspense fallback={<div />}>
+          <NavMain items={mappedItems} />
+        </React.Suspense>
       </SidebarContent>
 
       <SidebarFooter>
