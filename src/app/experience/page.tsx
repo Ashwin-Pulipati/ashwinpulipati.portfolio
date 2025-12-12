@@ -358,7 +358,7 @@ function TimelineMiniNav({ activeId, onSelect }: TimelineMiniNavProps) {
   return (
     <nav
       aria-label="Quick timeline navigation"
-      className="surface-soft sticky top-24 hidden h-fit flex-col gap-2 rounded-2xl border border-border/70 p-3 text-xs md:flex"
+      className="surface-soft sticky top-24 hidden h-fit flex-col gap-2 rounded-2xl border border-border/70 p-6 text-xs md:flex"
     >
       <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         Snapshot timeline
