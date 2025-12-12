@@ -12,6 +12,10 @@
   --font-size-xl: var(--fluid-xl);   /* H4, H3, subheadings */
   --font-size-2xl: var(--fluid-2xl); /* H2, section titles */
   --font-size-3xl: var(--fluid-3xl); /* H1, hero title */
+  --font-size-4xl: var(--fluid-4xl);
+  --font-size-5xl: var(--fluid-5xl);
+  --font-size-6xl: var(--fluid-6xl);
+  --font-size-7xl: var(--fluid-7xl);
   --line-height: var(--fluid-line);  /* Universal line-height */
   --font-sans: var(--font-nunitoSans); /* Body */
   --font-mono: var(--font-nunito); /* Subheadings */
@@ -61,6 +65,10 @@
   --fluid-xl: clamp(1.5rem, 2.5vw, 2rem);
   --fluid-2xl: clamp(1.75rem, 3vw, 2.5rem);
   --fluid-3xl: clamp(2rem, 4vw, 3rem);
+  --fluid-4xl: clamp(2.25rem, 4.5vw, 3.5rem);
+  --fluid-5xl: clamp(2.75rem, 5.25vw, 4.25rem);
+  --fluid-6xl: clamp(3.25rem, 6vw, 5.25rem);
+  --fluid-7xl: clamp(3.75rem, 7vw, 6.25rem);
   --fluid-line: 1.5;
   --radius: 0.75rem;
   --background: oklch(0.97 0.015 95);        
@@ -138,6 +146,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-size: var(--fluid-md);
+    line-height: var(--fluid-line);
   }
 
   @media (pointer: fine) {
@@ -171,9 +181,7 @@
 
 @layer components {
   .text-gradient {
-    display: inline-block;
-    width: fit-content;
-    height: fit-content;
+    @apply inline-block w-fit h-fit bg-clip-text text-transparent;
     background-image: linear-gradient(
       90deg,
       rgb(95, 162, 242), 
@@ -182,9 +190,7 @@
       rgb(252, 53, 106), 
       rgb(255, 214, 55)
     );
-    background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
     -webkit-text-fill-color: transparent;
   }
 
@@ -223,7 +229,8 @@
   }
 
   .rgb-card {
-    @apply w-full text-sm text-card-foreground;
+    @apply w-full text-card-foreground;
+    font-size: var(--fluid-sm); /* Default text size in card */
     position: relative;
     display: grid;
     grid-template-rows: minmax(14rem, 16rem) minmax(8rem, auto);

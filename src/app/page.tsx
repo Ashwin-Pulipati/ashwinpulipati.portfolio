@@ -18,7 +18,6 @@ const HERO_TAGS = [
 ] as const;
 
 const HomeSection = () => {
-  // UPDATED: Sync logic with CSS breakpoint (1280px)
   const isDesktop = useMedia("(min-width: 1280px)", false);
   const reduceMotion = useMedia("(prefers-reduced-motion: reduce)", false);
   const isIdle = useIdle(25_000);
@@ -31,17 +30,15 @@ const HomeSection = () => {
       aria-labelledby="home-heading"
       className={cn(
         "relative mx-auto flex w-full max-w-7xl flex-col gap-8 pb-12 pt-4",
-        // UPDATED: Switch from lg: to xl: for layout shift
         "xl:min-h-[70vh] xl:flex-row xl:items-center xl:gap-10"
       )}
     >
-      {/* LEFT COLUMN */}
       <div className="flex w-full flex-1 flex-col gap-6 max-w-full">
         <Badge
           variant="outline"
           className={cn(
             "inline-flex max-w-full items-center gap-2 rounded-full border-border/70 bg-card/80 px-3 py-1",
-            "text-[11px] font-medium tracking-[0.16em] uppercase text-muted-foreground",
+            "text-xs font-medium tracking-[0.16em] uppercase text-muted-foreground",
             !reduceMotion && ""
           )}
         >
@@ -57,15 +54,14 @@ const HomeSection = () => {
         <div className="space-y-3 max-w-full">
           <h1
             id="home-heading"
-            // UPDATED: Removed md:text-5xl. Now it stays 4xl on tablet, jumps to 5xl only on xl.
-            className="text-balance text-3xl font-semibold leading-tight sm:text-4xl xl:text-5xl"
+            className="text-balance text-4xl sm:text-5xl font-semibold leading-tight"
           >
             <span className="block text-gradient">If it runs on code,</span>
             <span className="block text-foreground">
               I design, build, and ship it.
             </span>
           </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
+          <p className="max-w-xl text-md leading-relaxed text-muted-foreground">
             I&apos;m Ashwin Pulipati, a full-stack engineer who moves
             comfortably across web apps, AI workflows, DevOps pipelines, mobile
             experiences, and even game engines. From real-estate and e-commerce
@@ -106,7 +102,7 @@ const HomeSection = () => {
           </Button>
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-muted-foreground">
+        <div className="flex flex-wrap gap-2 pt-1 text-xs text-muted-foreground">
           {HERO_TAGS.map((tag) => (
             <Badge
               key={tag}
@@ -118,8 +114,7 @@ const HomeSection = () => {
           ))}
         </div>
       </div>
-
-      {/* RIGHT COLUMN */}
+      
       <aside className="flex w-full max-w-full flex-1 flex-col gap-4 xl:max-w-lg">
         <div className="surface-soft relative w-full max-w-full overflow-hidden p-4 sm:p-5">
           <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -129,7 +124,7 @@ const HomeSection = () => {
             </span>
             <Badge
               variant="gradient"
-              className="max-w-full text-[11px] font-medium tracking-normal"
+              className="max-w-full text-xs font-medium tracking-normal whitespace-normal wrap-break-word"
             >
               Currently shipping multi-stack, AI-aware products
             </Badge>
@@ -137,7 +132,7 @@ const HomeSection = () => {
 
           <dl className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2 md:gap-4">
             <div>
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <dt className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                 Focus
               </dt>
               <dd className="mt-1 font-medium text-foreground">
@@ -145,7 +140,7 @@ const HomeSection = () => {
               </dd>
             </div>
             <div>
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <dt className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                 Tooling
               </dt>
               <dd className="mt-1 text-sm text-foreground">
@@ -153,7 +148,7 @@ const HomeSection = () => {
               </dd>
             </div>
             <div>
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <dt className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                 Quality
               </dt>
               <dd className="mt-1 text-sm text-foreground">
@@ -161,7 +156,7 @@ const HomeSection = () => {
               </dd>
             </div>
             <div>
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <dt className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                 Collaboration
               </dt>
               <dd className="mt-1 text-sm text-foreground">
@@ -172,7 +167,7 @@ const HomeSection = () => {
         </div>
 
         <div className="surface-soft flex w-full max-w-full flex-col gap-3 p-4 text-xs text-muted-foreground sm:p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em]">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em]">
             How I like to work
           </p>
           <ul className="space-y-2 text-sm text-muted-foreground">
@@ -199,7 +194,7 @@ const HomeSection = () => {
             </li>
           </ul>
 
-          <div className="pt-1 text-[11px] text-muted-foreground">
+          <div className="pt-1 text-xs text-muted-foreground">
             <Link
               href="/about-me"
               className="underline-offset-4 hover:text-foreground hover:underline"

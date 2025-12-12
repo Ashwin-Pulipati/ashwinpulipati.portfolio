@@ -44,18 +44,18 @@ const Footer = () => {
               aria-label="Back to home"
               className="w-fit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <span className="font-display text-xl md:text-2xl font-semibold text-gradient leading-tight pl-0.5">
+              <span className="font-display text-2xl font-semibold text-gradient leading-tight pl-0.5">
                 Ashwin Pulipati
               </span>
             </Link>
-            <span className="text-xs md:text-sm text-muted-foreground text-center md:text-left">
+            <span className="text-xs text-muted-foreground text-center md:text-left">
               &copy; {year} Made with 🫶🏻 by Ashwin Pulipati
             </span>
           </div>
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-col lg:flex-row items-center justify-center gap-x-4 gap-y-1 text-[11px] md:text-xs text-muted-foreground text-center"
+            className="flex flex-col lg:flex-row items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground text-center" 
           >
             {NAV_LINKS.map((item) => (
               <Link
@@ -97,7 +97,7 @@ const Footer = () => {
                     aria-label="Hire Ashwin"
                   >
                     <Link href="/hire-me">
-                      <span className="flex items-center gap-1 text-xs md:text-sm">
+                      <span className="flex items-center gap-1 text-xs">
                         <span>Let&apos;s work together</span>
                         <ArrowUpRight
                           className="h-3.5 w-3.5 shrink-0"
@@ -125,7 +125,10 @@ const Footer = () => {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <Github className="h-4 w-4 text-zinc-600 dark:text-zinc-400 shrink-0" aria-hidden="true" />
+                      <Github
+                        className="h-4 w-4 text-zinc-600 dark:text-zinc-400 shrink-0"
+                        aria-hidden="true"
+                      />
                     </Link>
                   </Button>
                 </TooltipTrigger>
@@ -147,7 +150,10 @@ const Footer = () => {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      <Linkedin className="h-4 w-4 text-blue-500 dark:text-blue-400 shrink-0" aria-hidden="true" />
+                      <Linkedin
+                        className="h-4 w-4 text-blue-500 dark:text-blue-400 shrink-0"
+                        aria-hidden="true"
+                      />
                     </Link>
                   </Button>
                 </TooltipTrigger>

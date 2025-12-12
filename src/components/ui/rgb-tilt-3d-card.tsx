@@ -106,13 +106,15 @@ const LinkRow = React.memo(function LinkRowBase({
   const { copied, copy } = useSmartClipboard();
 
   return (
-    <div className="flex w-full items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/70 px-3 py-1.5 text-xs md:text-sm">
+    <div className="flex w-full items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/70 px-3 py-1.5 text-sm">
+      {" "}
+      {/* Fluid text-sm */}
       <div className="flex min-w-0 flex-col text-muted-foreground">
         <span className="font-medium">{label}</span>
 
         <span
           className={cn(
-            "text-[11px] md:text-xs text-muted-foreground",
+            "text-xs text-muted-foreground",
             "text-wrap balance wrap=break-words leading-snug",
             "max-w-full"
           )}
@@ -120,7 +122,6 @@ const LinkRow = React.memo(function LinkRowBase({
           {value}
         </span>
       </div>
-
       <Button
         type="button"
         size="sm"
@@ -140,7 +141,6 @@ const LinkRow = React.memo(function LinkRowBase({
           </div>
         )}
       </Button>
-
       <span className="sr-only" aria-live="polite">
         {copied ? `${label} link copied to clipboard` : ""}
       </span>
@@ -152,7 +152,7 @@ const SimpleCopyButton = React.memo(function SimpleCopyButtonBase({
   label,
   value,
 }: SimpleCopyButtonProps) {
-  const { copied, copy } = useSmartClipboard();
+  const { copied, copy } = useSmartClipboard(1000);
 
   return (
     <Button
@@ -308,10 +308,10 @@ export function RgbTilt3DCard({
 
               <DialogContent className="surface-soft w-[min(95vw,40rem)] rounded-2xl">
                 <DialogHeader>
-                  <DialogTitle className="text-base md:text-lg">
+                  <DialogTitle className="text-lg">
                     Share this project
                   </DialogTitle>
-                  <DialogDescription className="text-xs md:text-sm">
+                  <DialogDescription className="text-sm">
                     Share the live demo and GitHub repository with others.
                   </DialogDescription>
                 </DialogHeader>
@@ -369,7 +369,6 @@ export function RgbTilt3DCard({
                       </div>
                     </div>
                   )}
-
                   <div className="space-y-2">
                     <p className="text-xs font-medium text-muted-foreground">
                       Project links
@@ -422,7 +421,7 @@ export function RgbTilt3DCard({
 
           {subtitle && <p className="rgb-card-subtitle">{subtitle}</p>}
 
-          <p className="text-xs md:text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
 

@@ -173,7 +173,6 @@ const TOOL_GROUPS: readonly {
   },
 ];
 
-
 const TOOL_ICON_MAP: Record<
   string,
   React.ComponentType<React.SVGProps<SVGSVGElement>>
@@ -231,17 +230,17 @@ function TrackCard({ track }: { readonly track: ExpertiseTrack }) {
             <Icon className="h-5 w-5" aria-hidden="true" />
           </span>
           <div>
-            <h2 className="text-sm font-semibold md:text-base">
+            <h2 className="text-md font-semibold">
               {track.label}
             </h2>
-            <p className="text-xs text-muted-foreground md:text-[13px]">
+            <p className="text-xs text-muted-foreground">
               {track.subtitle}
             </p>
           </div>
         </div>
       </header>
 
-      <ul className="mt-2 space-y-2.5 text-xs text-muted-foreground md:text-[13px]">
+      <ul className="mt-2 space-y-2.5 text-sm text-muted-foreground">
         {track.outcomes.map((item) => (
           <li key={item} className="flex gap-2">
             <GradientBullet />
@@ -254,7 +253,7 @@ function TrackCard({ track }: { readonly track: ExpertiseTrack }) {
         {track.stack.map((tool) => (
           <span
             key={tool}
-            className="rounded-full border border-border/70 bg-card/80 px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+            className="rounded-full border border-border/70 bg-card/80 px-2.5 py-1 text-xs font-medium text-muted-foreground"
           >
             {tool}
           </span>
@@ -282,7 +281,7 @@ function CapabilityCard({
           {title}
         </h3>
       </header>
-      <ul className="space-y-2 text-xs text-muted-foreground md:text-[13px]">
+      <ul className="space-y-2 text-sm text-muted-foreground">
         {items.map((item) => (
           <li key={item} className="flex gap-2">
             <GradientBullet />
@@ -310,9 +309,12 @@ function ToolGroup({
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           {label}
         </p>
-        <Icon className={cn("h-4 w-4 shrink-0", colorClass)} aria-hidden="true" />
+        <Icon
+          className={cn("h-4 w-4 shrink-0", colorClass)}
+          aria-hidden="true"
+        />
       </header>
-      <div className="flex flex-wrap gap-1.5 text-[11px] md:text-xs">
+      <div className="flex flex-wrap gap-1.5 text-xs">
         {items.map((tool) => (
           <span
             key={tool}
@@ -340,7 +342,7 @@ function ExpertiseIntro() {
             variant="outline"
             className={cn(
               "inline-flex max-w-full items-center gap-2 rounded-full border-border/70 bg-card/80 px-3 py-1",
-              "text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
+              "text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground"
             )}
           >
             <span className="inline-flex h-1.5 w-10 rounded-full bg-linear-to-r from-primary via-secondary to-accent" />
@@ -348,14 +350,14 @@ function ExpertiseIntro() {
           </Badge>
           <h1
             id="expertise-heading"
-            className="text-balance text-2xl font-semibold leading-snug md:text-3xl"
+            className="text-balance text-3xl font-semibold leading-snug"
           >
             I work across the stack, but I’m most useful where{" "}
             <span className="text-gradient text-gradient-small font-bold">
               product, data, and reliability overlap.
             </span>
           </h1>
-          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+          <p className="max-w-2xl text-md leading-relaxed text-muted-foreground">
             This page is a map of how I like to contribute: building UIs people
             actually enjoy using, wiring the APIs and data underneath them, and
             keeping the whole system observable and shippable.
@@ -391,7 +393,7 @@ function ExpertiseIntro() {
           </Button>
         </div>
       </header>
-      <p className="text-[11px] text-muted-foreground/90">{label}</p>
+      <p className="text-xs text-muted-foreground/90">{label}</p>{" "}
     </section>
   );
 }
@@ -418,7 +420,7 @@ function ToolsAndCapabilities() {
       className="space-y-8 md:space-y-10"
     >
       <div className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Tooling I’m comfortable owning
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -433,7 +435,7 @@ function ToolsAndCapabilities() {
       </div>
 
       <div className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           How that expertise shows up on teams
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -465,7 +467,7 @@ function CollaborationNote() {
           <h2 className="text-sm font-semibold">
             Where I’ve been most effective
           </h2>
-          <p className="text-xs leading-relaxed text-muted-foreground md:text-[13px]">
+          <p className="text-xs leading-relaxed text-muted-foreground">
             Cross-functional teams that care about clean UX, stable APIs,
             observability, and a steady delivery rhythm more than flashy
             rewrites.
@@ -489,8 +491,11 @@ export default function ExpertisePage() {
   return (
     <main
       id="main-content"
-      className={cn("space-y-10 md:space-y-12 lg:space-y-14 animate-in fade-in slide-in-from-bottom-4 duration-700", !prefersReducedMotion &&
-        "animate-in fade-in slide-in-from-bottom-4 duration-700")}
+      className={cn(
+        "space-y-10 md:space-y-12 lg:space-y-14",
+        !prefersReducedMotion &&
+          "animate-in fade-in slide-in-from-bottom-4 duration-700"
+      )}
     >
       <ExpertiseIntro />
       <TracksGrid />

@@ -188,7 +188,7 @@ export default function WorkPage() {
 
   const totalProjects = PROJECTS.length;
   const visibleCount = filteredProjects.length;
-  
+
   const prefersReducedMotion = useMedia(
     "(prefers-reduced-motion: reduce)",
     false
@@ -197,9 +197,11 @@ export default function WorkPage() {
   return (
     <main
       id="main-content"
-      className={cn("space-y-8 md:space-y-10 lg:space-y-12",
+      className={cn(
+        "space-y-8 md:space-y-10 lg:space-y-12",
         !prefersReducedMotion &&
-        "animate-in fade-in slide-in-from-bottom-4 duration-700")}
+          "animate-in fade-in slide-in-from-bottom-4 duration-700"
+      )}
       aria-labelledby="work-heading"
     >
       <section className="space-y-4 md:space-y-5">
@@ -209,7 +211,7 @@ export default function WorkPage() {
               variant="outline"
               className={cn(
                 "inline-flex max-w-full items-center gap-2 rounded-full border-border/70 bg-card/80 px-3 py-1",
-                "text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
+                "text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground"
               )}
             >
               <span className="inline-flex h-1.5 w-10 rounded-full bg-linear-to-r from-primary via-secondary to-accent" />
@@ -217,7 +219,7 @@ export default function WorkPage() {
             </Badge>
             <h1
               id="work-heading"
-              className="text-balance text-2xl font-semibold leading-snug md:text-3xl"
+              className="text-balance text-3xl font-semibold leading-snug"
             >
               A small set of projects that show how I{" "}
               <span className="text-gradient text-gradient-small font-bold">
@@ -226,7 +228,7 @@ export default function WorkPage() {
             </h1>
             <p
               id="work-intro"
-              className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base"
+              className="max-w-2xl text-md leading-relaxed text-muted-foreground"
             >
               These projects span AI sandboxes, timelines, dashboards, and a
               custom game engine. They’re representative of the kinds of systems
@@ -246,7 +248,7 @@ export default function WorkPage() {
             >
               <p
                 id="work-focus-label"
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground"
               >
                 Filter by focus
               </p>
@@ -256,7 +258,7 @@ export default function WorkPage() {
                   handleFocusChange(value as ProjectFocus)
                 }
               >
-                <SelectTrigger className="w-[220px] justify-between text-xs md:text-sm">
+                <SelectTrigger className="w-[220px] justify-between text-sm">
                   <SelectValue placeholder="All projects" />
                 </SelectTrigger>
                 <SelectContent>
@@ -264,7 +266,7 @@ export default function WorkPage() {
                     <SelectItem
                       key={option.value}
                       value={option.value}
-                      className="text-xs md:text-sm"
+                      className="text-sm"
                     >
                       {option.label}
                     </SelectItem>
@@ -272,14 +274,14 @@ export default function WorkPage() {
                 </SelectContent>
               </Select>
             </div>
-            <p className="max-w-xs text-[11px] text-muted-foreground md:ml-auto">
+            <p className="max-w-xs text-xs text-muted-foreground md:ml-auto">
               {activeFocusConfig.description}
             </p>
           </div>
         </div>
 
         <p
-          className="text-[11px] text-muted-foreground"
+          className="text-xs text-muted-foreground"
           aria-live="polite"
           aria-atomic="true"
         >

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Github, Linkedin} from "lucide-react";
+import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import { useIdle, useMedia } from "react-use";
 
 import { Button } from "@/components/ui/button";
@@ -96,7 +96,7 @@ const AboutAvatar = () => {
 const TagBadge = ({ children }: { children: React.ReactNode }) => (
   <Badge
     variant="outline"
-    className="rounded-full border-border/70 bg-card/80 px-3 py-1 text-[11px] font-medium text-muted-foreground shadow-[0_1px_0_oklch(0.98_0_0/0.7),0_5px_5px_oklch(0.7_0_0/0.35)]"
+    className="rounded-full border-border/70 bg-card/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-[0_1px_0_oklch(0.98_0_0/0.7),0_5px_5px_oklch(0.7_0_0/0.35)]"
   >
     {children}
   </Badge>
@@ -110,10 +110,10 @@ const PillarSection = ({
   items: readonly string[];
 }) => (
   <section className="surface-soft flex h-full flex-col gap-3 p-5">
-    <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+    <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
       {title}
     </h2>
-    <ul className="space-y-2 text-sm text-muted-foreground md:text-[13px]">
+    <ul className="space-y-2 text-sm text-muted-foreground">
       {items.map((item) => (
         <li key={item} className="flex gap-2">
           <GradientBullet />
@@ -130,22 +130,21 @@ const IntroTile = () => (
     className="surface-soft flex h-full flex-col justify-between gap-6 p-5 sm:p-6"
   >
     <div className="space-y-3">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         At a glance
       </p>
-      <h1 className="text-xl font-semibold leading-snug text-foreground sm:text-2xl">
+      <h1 className="text-2xl font-semibold leading-snug text-foreground">
         A product-minded engineer who bridges UX, systems, and delivery.
       </h1>
-      <p className="text-sm leading-relaxed text-muted-foreground">
-        I work across the stack from React/Next.js frontends to Node, Django,
-        and FastAPI backends to ship features that are usable, observable, and
-        production-ready. Recent work includes AI-powered tools, F-1 visa
-        timelines, weather dashboards, and custom engines that keep performance
-        and user experience tightly aligned.
+      <p className="text-md leading-relaxed text-muted-foreground">
+        Translate fuzzy, real-world requirements into clear scopes, technical
+        plans, and delivery milestones. Build end-to-end features across
+        React/Next.js frontends and Node/Python backends with a strong focus on
+        reliability.
       </p>
     </div>
 
-    <div className="space-y-2 text-[11px] text-muted-foreground">
+    <div className="space-y-2 text-xs text-muted-foreground">
       {PROFILE_TAGS.map((tag) => (
         <p key={tag}>{tag}</p>
       ))}
@@ -169,10 +168,10 @@ const CenterHeroTile = ({ ctaLabel }: { ctaLabel: string }) => (
       <AboutAvatar />
 
       <div className="space-y-1.5">
-        <h2 className="text-lg font-semibold text-foreground sm:text-xl">
+        <h2 className="text-xl font-semibold text-foreground">
           Ashwin Pulipati
         </h2>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Full-Stack Software Engineer
         </p>
       </div>
@@ -260,10 +259,10 @@ const TimelineAndOutsideTile = () => (
     className="surface-soft flex h-full flex-col gap-5 p-5 sm:p-6"
   >
     <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         Timeline
       </p>
-      <div className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+      <div className="mt-4 text-sm leading-relaxed text-muted-foreground">
         <ol
           className="relative space-y-5 border-l border-border/70 pl-4"
           aria-label="Career and education timeline"
@@ -281,10 +280,13 @@ const TimelineAndOutsideTile = () => (
                     dotColor
                   )}
                 />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/90">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground/90">
                   {item.period}
                 </p>
-                <p className="font-semibold text-foreground/90">{item.title}</p>
+                {/* Fluid text-md for timeline titles */}
+                <p className="text-md font-semibold text-foreground">
+                  {item.title}
+                </p>
                 <p className="mt-0.5">{item.body}</p>
                 {index !== TIMELINE_ITEMS.length - 1 && (
                   <span className="sr-only">Continues to next period</span>
@@ -299,10 +301,10 @@ const TimelineAndOutsideTile = () => (
     <Separator className="my-2 opacity-70" />
 
     <div>
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         Outside of the editor
       </p>
-      <ul className="space-y-1.5 text-[13px] leading-relaxed text-muted-foreground">
+      <ul className="space-y-1.5 text-sm leading-relaxed text-muted-foreground">
         {OUTSIDE_OF_WORK.map((item) => (
           <li key={item} className="flex gap-2">
             <GradientBullet />
@@ -336,7 +338,7 @@ const AboutPage = () => {
           variant="outline"
           className={cn(
             "inline-flex max-w-full items-center gap-2 rounded-full border-border/70 bg-card/80 px-3 py-1",
-            "text-[11px] font-medium tracking-widest uppercase text-muted-foreground"
+            "text-xs font-medium tracking-widest uppercase text-muted-foreground"
           )}
           role="status"
           aria-label="Open to relocation and remote-friendly roles"

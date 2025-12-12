@@ -27,7 +27,7 @@ const HeaderLogo = ({ hideText = false }: { hideText?: boolean }) => (
         <span className="font-display text-xl md:text-4xl font-semibold text-gradient pl-0.5">
           Ashwin Pulipati
         </span>
-        <span className="font-mono text-[7.5px] md:text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+        <span className="font-mono text-[7.5px] md:text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
           If It Runs on Code, I Build It.
         </span>
       </div>
@@ -110,14 +110,13 @@ const Header = () => {
 
             <div className="flex items-center gap-3">
               <nav aria-label="Primary actions" className={ctaShellClasses}>
-                {/* Resume Button */}
                 <Button
                   asChild
                   variant="outline"
                   jellyTone="ghost"
                   size="sm"
                   className={cn(
-                    "tracking-[0.12em] uppercase text-xs md:text-sm flex items-center gap-2",
+                    "tracking-[0.12em] uppercase text-sm flex items-center gap-2",
                     "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isResumeActive && "bg-muted/60 border-border/80"
                   )}
@@ -131,14 +130,13 @@ const Header = () => {
                     <span>Resume</span>
                   </Link>
                 </Button>
-
-                {/* Hire Me Button */}
+                
                 <Button
                   asChild
                   jellyTone="gradient"
                   size="sm"
                   className={cn(
-                    "tracking-[0.12em] uppercase text-xs md:text-sm flex items-center gap-2",
+                    "tracking-[0.12em] uppercase text-sm flex items-center gap-2", 
                     "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isHireMeActive && "brightness-105"
                   )}

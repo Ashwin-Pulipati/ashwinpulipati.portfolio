@@ -87,8 +87,7 @@ const QUICK_FACTS: readonly QuickFact[] = [
   },
 ];
 
-const PRIMARY_EMAIL = "ashwinpulipati@gmail.com";
-const SECONDARY_EMAIL = "ashwinpulipati@gmail.com";
+const EMAIL = "ashwinpulipati@gmail.com";
 
 type ContactFormState = {
   name: string;
@@ -145,7 +144,8 @@ function OpportunitySelector({
     <div className="space-y-3 pt-2">
       <div className="space-y-3">
         <Label>
-          Opportunity Type <span className="text-red-500">*</span>
+          Opportunity Type{" "}
+          <span className="text-red-500 dark:text-red-400">*</span>
         </Label>
 
         <RadioGroup
@@ -179,7 +179,7 @@ function OpportunitySelector({
                           : "border-muted-foreground/50"
                       )}
                     />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                       {option.label}
                     </span>
                   </span>
@@ -190,7 +190,7 @@ function OpportunitySelector({
         </RadioGroup>
 
         {!reduceMotion && (
-          <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/90">
+          <p className="flex items-center gap-1.5 text-xs text-muted-foreground/90">
             <Sparkles className="h-3 w-3 text-primary" aria-hidden="true" />
             <span>
               You can adjust this later. It simply shapes how I read your
@@ -224,7 +224,7 @@ function ContactSection({
     }
   );
 
-  const [, copyToClipboard] = useCopyToClipboard();
+  const [{ value: clipboardValue }, copyToClipboard] = useCopyToClipboard();
   const [justCopied, setJustCopied] = useState(false);
 
   const state: ContactFormState = formState ?? {
@@ -283,7 +283,7 @@ function ContactSection({
       ? state.message.trim()
       : "We are exploring an opportunity that looks aligned with your background.";
 
-    lines.push(`To: ${PRIMARY_EMAIL}`);
+    lines.push(`To: ${EMAIL}`);
     lines.push("");
     lines.push(`Subject: ${subject}`);
     lines.push("");
@@ -389,11 +389,11 @@ function ContactSection({
         <header className="space-y-1">
           <h2
             id="contact-form-heading"
-            className="text-base font-semibold leading-snug md:text-lg"
+            className="text-lg font-semibold leading-snug"
           >
             Contact form
           </h2>
-          <p className="text-xs text-muted-foreground md:text-[13px]">
+          <p className="text-sm text-muted-foreground">
             Fill this in to generate a ready-to-send email.
           </p>
         </header>
@@ -402,7 +402,8 @@ function ContactSection({
           <div className="grid gap-3 md:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="contact-name">
-                Your name <span className="text-red-500">*</span>
+                Your name{" "}
+                <span className="text-red-500 dark:text-red-400">*</span>
               </Label>
               <Input
                 id="contact-name"
@@ -419,7 +420,7 @@ function ContactSection({
               {errors.name && (
                 <p
                   id="contact-name-error"
-                  className="text-[11px] text-destructive"
+                  className="text-xs text-destructive"
                 >
                   {errors.name}
                 </p>
@@ -427,7 +428,8 @@ function ContactSection({
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="work-email">
-                Work email <span className="text-red-500">*</span>
+                Work email{" "}
+                <span className="text-red-500 dark:text-red-400">*</span>
               </Label>
               <Input
                 id="work-email"
@@ -443,7 +445,7 @@ function ContactSection({
               {errors.email && (
                 <p
                   id="work-email-error"
-                  className="text-[11px] text-destructive"
+                  className="text-xs text-destructive"
                 >
                   {errors.email}
                 </p>
@@ -483,7 +485,8 @@ function ContactSection({
           <div className="space-y-1.5">
             <Label htmlFor="contact-link">
               Role link or reference{" "}
-              <span className="text-xs text-muted-foreground">(optional)</span>
+              <span className="text-xs text-muted-foreground">(optional)</span>{" "}
+              {/* Fluid text-xs */}
             </Label>
             <Input
               id="contact-link"
@@ -496,7 +499,7 @@ function ContactSection({
 
           <div className="space-y-1.5">
             <Label htmlFor="message">
-              Message <span className="text-red-500">*</span>
+              Message <span className="text-red-500 dark:text-red-400">*</span>
             </Label>
             <Textarea
               id="message"
@@ -508,7 +511,7 @@ function ContactSection({
               aria-invalid={!!errors.message}
             />
             {errors.message && (
-              <p className="text-[11px] text-destructive">{errors.message}</p>
+              <p className="text-xs text-destructive">{errors.message}</p>
             )}
           </div>
 
@@ -547,13 +550,13 @@ function ContactSection({
               </Button>
             </div>
 
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Or email me directly at{" "}
               <Link
                 href="/about-me"
                 className="font-semibold underline-offset-4 hover:text-foreground hover:underline"
               >
-                {SECONDARY_EMAIL}
+                {EMAIL}
               </Link>
             </p>
           </div>
@@ -563,15 +566,21 @@ function ContactSection({
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="surface-soft max-w-[min(95vw,40rem)] rounded-2xl border border-border/70 p-4 md:p-6">
           <DialogHeader className="mt-10 md:mt-0">
-            <DialogTitle className="text-base md:text-lg">
+            <DialogTitle className="text-lg">
+              {" "}
+              {/* Fluid text-lg */}
               Preview email before sending
             </DialogTitle>
-            <DialogDescription className="text-xs md:text-sm">
+            <DialogDescription className="text-sm">
+              {" "}
+              {/* Fluid text-sm */}
               This is the message that will be sent via EmailJS.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-3 rounded-2xl border border-border/60 bg-card/70 p-6 text-xs md:text-sm">
+          <div className="space-y-3 rounded-2xl border border-border/60 bg-card/70 p-6 text-sm">
+            {" "}
+            {/* Fluid text-sm */}
             <pre className="whitespace-pre-wrap wrap-break-word font-sans">
               {buildEmailBody()}
             </pre>
@@ -623,7 +632,7 @@ function OpportunitiesIntro({
           variant="outline"
           className={cn(
             "inline-flex max-w-full items-center gap-2 rounded-full border-border/70 bg-card/80 px-3 py-1",
-            "text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
+            "text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground"
           )}
         >
           <span className="inline-flex h-1.5 w-10 rounded-full bg-linear-to-r from-primary via-secondary to-accent" />
@@ -631,22 +640,26 @@ function OpportunitiesIntro({
         </Badge>
         <h1
           id="opportunities-heading"
-          className="text-balance text-2xl font-semibold leading-snug md:text-3xl"
+          className="text-balance text-3xl font-semibold leading-snug"
         >
           I&apos;m looking for teams where{" "}
-          <span className="text-gradient-small font-bold">
+          <span className="text-gradient font-bold">
             shipping, quality, and learning
           </span>{" "}
           actually matter.
         </h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-          I enjoy working on products that feel great to use, respect real-world
-          constraints, and are built with solid engineering foundations. This
-          page is for the people who might want me on their team.
+        <p className="max-w-2xl text-md leading-relaxed text-muted-foreground">
+          {" "}
+          {/* Fluid text-md */}I enjoy working on products that feel great to
+          use, respect real-world constraints, and are built with solid
+          engineering foundations. This page is for the people who might want me
+          on their team.
         </p>
       </header>
       {accessibilityNote && (
-        <p className="text-[11px] text-muted-foreground/90">
+        <p className="text-xs text-muted-foreground/90">
+          {" "}
+          {/* Fluid text-xs */}
           {accessibilityNote}
         </p>
       )}
@@ -677,6 +690,8 @@ function QuickFactsInline() {
   return (
     <section aria-label="At a glance" className="space-y-3">
       <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        {" "}
+        {/* Fluid text-sm */}
         LOGISTICS
       </h2>
       <div className="space-y-3">
@@ -704,10 +719,13 @@ function QuickFactsInline() {
                 />
               </span>
               <div className="space-y-0.5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {" "}
+                  {/* Fluid text-xs */}
                   {fact.label}
                 </p>
-                <p className="text-sm text-foreground">{fact.value}</p>
+                <p className="text-sm text-foreground">{fact.value}</p>{" "}
+                {/* Fluid text-sm */}
               </div>
             </div>
           );
@@ -722,9 +740,13 @@ function DirectContacts() {
     <section aria-label="Direct contacts" className="space-y-4">
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          {" "}
+          {/* Fluid text-sm */}
           Find me elsewhere
         </h2>
-        <p className="mt-1 max-w-xl text-xs text-muted-foreground md:text-[13px]">
+        <p className="mt-1 max-w-xl text-xs text-muted-foreground">
+          {" "}
+          {/* Fluid text-xs */}
           Prefer not to use the form? Use any of these and include a link to the
           role or project.
         </p>
@@ -732,8 +754,10 @@ function DirectContacts() {
 
       <div className="flex flex-row flex-wrap items-center gap-4">
         <Button jellyTone="ghost" size="lg" className="w-fit md:w-auto" asChild>
-          <a href={`mailto:${PRIMARY_EMAIL}`}>
+          <a href={`mailto:${EMAIL}`}>
             <span className="flex items-center justify-center gap-2 text-sm">
+              {" "}
+              {/* Fluid text-sm */}
               <Mail
                 className="h-4 w-4 shrink-0 text-rose-500 dark:text-rose-400"
                 aria-hidden="true"
@@ -750,6 +774,8 @@ function DirectContacts() {
             rel="noreferrer noopener"
           >
             <span className="flex items-center justify-center gap-2 text-sm">
+              {" "}
+              {/* Fluid text-sm */}
               <Linkedin
                 className="h-4 w-4 shrink-0 text-blue-500 dark:text-blue-400"
                 aria-hidden="true"
@@ -766,6 +792,8 @@ function DirectContacts() {
             rel="noreferrer noopener"
           >
             <span className="flex items-center justify-center gap-2 text-sm">
+              {" "}
+              {/* Fluid text-sm */}
               <Github
                 className="h-4 w-4 shrink-0 text-zinc-600 dark:text-zinc-400"
                 aria-hidden="true"
@@ -783,9 +811,13 @@ function CalendlyBlock() {
   return (
     <section aria-label="Calendly booking" className="space-y-2">
       <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        {" "}
+        {/* Fluid text-sm */}
         Ready to chat?
       </h2>
-      <p className="max-w-xl text-xs text-muted-foreground md:text-[13px]">
+      <p className="max-w-xl text-xs text-muted-foreground">
+        {" "}
+        {/* Fluid text-xs */}
         If you already know this is a serious fit, you can book a short call
         directly.
       </p>
@@ -796,6 +828,8 @@ function CalendlyBlock() {
           rel="noreferrer noopener"
         >
           <span className="flex items-center gap-2 text-sm">
+            {" "}
+            {/* Fluid text-sm */}
             <CalendarIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>Book a 20-minute intro call</span>
           </span>
@@ -812,7 +846,10 @@ export default function HireMePage() {
   useTitle("Work with Ashwin – Opportunities");
 
   return (
-    <main id="main-content" className="space-y-8 md:space-y-10 lg:space-y-12">
+    <main
+      id="main-content"
+      className="space-y-8 md:space-y-10 lg:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700"
+    >
       <section
         aria-label="Fit at a glance and how to reach out"
         className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]"

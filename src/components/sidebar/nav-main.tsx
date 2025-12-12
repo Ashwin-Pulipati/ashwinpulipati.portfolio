@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { useIdle, useMedia } from "react-use";
 
@@ -20,6 +20,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
@@ -27,11 +28,11 @@ type NavMainItem = {
   title: string;
   url: string;
   icon?: LucideIcon;
-  isActive?: boolean; // ignored now in favor of URL-based active state
+  isActive?: boolean;
   items?: {
     title: string;
     url: string;
-    isActive?: boolean; // ignored as well
+    isActive?: boolean;
   }[];
 };
 
@@ -59,7 +60,6 @@ function normalizeFocusParam(value: string | null): ProjectFocus {
 }
 
 function getFocusFromHref(href: string): ProjectFocus {
-  // Support URLs like "/work" and "/work?focus=backend-heavy"
   try {
     const url = new URL(href, "http://localhost");
     const focusParam = url.searchParams.get("focus");
@@ -70,6 +70,8 @@ function getFocusFromHref(href: string): ProjectFocus {
 }
 
 export function NavMain({ items }: { readonly items: NavMainItem[] }) {
+  const { state, setOpen } = useSidebar();
+  const router = useRouter();
   const prefersReducedMotion = useMedia(
     "(prefers-reduced-motion: reduce)",
     false
@@ -90,7 +92,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
           isIdle && "opacity-95"
         )}
       >
-        <SidebarGroupLabel className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+        <SidebarGroupLabel className="text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
           Navigation
         </SidebarGroupLabel>
 
@@ -99,14 +101,12 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
             const hasChildren = item.items && item.items.length > 0;
             const Icon = item.icon;
 
-            // Top-level active: path match OR any child active
             const basePath = item.url.split("?")[0];
             const isOnThisPath = pathname === basePath;
 
             let anyChildActive = false;
 
             if (hasChildren && isOnThisPath) {
-              // Special handling for /work children based on ?focus=
               if (basePath === "/work") {
                 anyChildActive = item.items!.some((subItem) => {
                   const subFocus = getFocusFromHref(subItem.url);
@@ -146,13 +146,13 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                             "size-5",
                             itemIsActive
                               ? "text-sidebar-accent-foreground"
-                              : "text-muted-background"
+                              : "text-muted-foreground"
                           )}
                         />
                       )}
                       <span
                         className={cn(
-                          "text-sm",
+                          "text-md",
                           itemIsActive && "font-semibold"
                         )}
                       >
@@ -164,7 +164,6 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
               );
             }
 
-            // Items with children (e.g., Work)
             return (
               <Collapsible
                 key={item.title}
@@ -177,6 +176,15 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                     <SidebarMenuButton
                       tooltip={item.title}
                       isActive={itemIsActive}
+                      onClick={(e) => {
+                        if (state === "collapsed") {
+                          e.preventDefault();
+                          setOpen(true);
+                          setTimeout(() => {
+                            router.push(item.url);
+                          }, 150);
+                        }
+                      }}
                       className={cn(
                         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                       )}
@@ -188,13 +196,13 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                             "size-5",
                             itemIsActive
                               ? "text-sidebar-accent-foreground"
-                              : "text-muted-background"
+                              : "text-muted-foreground"
                           )}
                         />
                       )}
                       <span
                         className={cn(
-                          "text-sm",
+                          "text-md", 
                           itemIsActive && "font-semibold"
                         )}
                       >
@@ -203,7 +211,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                       <ChevronRight
                         aria-hidden="true"
                         className={cn(
-                          "ml-auto size-4 text-muted-background",
+                          "ml-auto size-4 text-muted-foreground",
                           "transition-transform duration-200",
                           "group-data-[state=open]/collapsible:rotate-90"
                         )}
@@ -214,13 +222,10 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                   <CollapsibleContent>
                     <SidebarMenuSub className="mt-1">
                       {item.items?.map((subItem) => {
-                        // Child active logic
                         const childBasePath = subItem.url.split("?")[0];
-
                         let subIsActive = false;
 
                         if (basePath === "/work") {
-                          // Match on focus bucket
                           const subFocus = getFocusFromHref(subItem.url);
                           subIsActive =
                             pathname === "/work" && subFocus === currentFocus;
@@ -242,7 +247,7 @@ export function NavMain({ items }: { readonly items: NavMainItem[] }) {
                                 aria-current={subIsActive ? "page" : undefined}
                                 className="flex items-center gap-2"
                               >
-                                <span className="text-xs">{subItem.title}</span>
+                                <span className="text-sm">{subItem.title}</span>{" "}
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
