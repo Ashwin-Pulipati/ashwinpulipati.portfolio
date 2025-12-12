@@ -356,4 +356,11 @@
       max-width: 360px;
     }
   }
+
+  @keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 }
