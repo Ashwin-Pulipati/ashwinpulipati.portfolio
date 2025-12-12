@@ -14,6 +14,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { NavMainSkeleton } from "./sidebar/nav-main-skeleton";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -41,13 +42,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   );
 
   return (
-    <Sidebar collapsible="icon" {...props} >
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="mt-4">
         <SidebarTrigger />
       </SidebarHeader>
 
       <SidebarContent>
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={<NavMainSkeleton />}>
           <NavMain items={mappedItems} />
         </React.Suspense>
       </SidebarContent>
