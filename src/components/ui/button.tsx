@@ -236,8 +236,7 @@ function Button({
   ...props
 }: ButtonProps) {
   const resolvedSize = size ?? "default";
-
-  // If jellyTone is provided → render 3D jelly version in the chosen tone
+  
   if (jellyTone) {
     return (
       <JellyButton

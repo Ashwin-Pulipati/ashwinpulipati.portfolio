@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useCopyToClipboard, useLocalStorage } from "react-use";
 import { ArrowRight, Check, Copy, Mail } from "lucide-react";
@@ -43,6 +43,9 @@ export function ContactSection({
     }
   );
 
+  const [draftCopied, setDraftCopied] = useState(false);
+
+
   const [, copyToClipboard] = useCopyToClipboard();
   const [justCopied, setJustCopied] = useState(false);
 
@@ -58,6 +61,11 @@ export function ContactSection({
   const [errors, setErrors] = useState<ContactFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  
+  const [draft, setDraft] = useState("");
+
+  const formTopRef = useRef<HTMLDivElement | null>(null);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
 
   const opportunityLabel =
     OPPORTUNITY_OPTIONS.find((o) => o.id === opportunity)?.label ?? "a role";
@@ -134,8 +142,23 @@ export function ContactSection({
       toast.error("Please fill in the required fields.");
       return;
     }
+    setDraft(buildEmailBody());
     setPreviewOpen(true);
   };
+
+  const handleCopyDraft = () => {
+    if (!draft.trim()) {
+      toast.error("Nothing to copy.");
+      return;
+    }
+
+    copyToClipboard(draft);
+    setDraftCopied(true);
+    toast.success("Draft copied to clipboard");
+
+    setTimeout(() => setDraftCopied(false), 2000);
+  };
+
 
   const handleConfirmSend = async () => {
     if (submitting) return;
@@ -148,12 +171,15 @@ export function ContactSection({
     const subject = `Opportunity for ${opportunityLabel} (${
       state.roleTitle || "Software Engineering"
     })`;
-    const messageForTemplate = state.message.trim()
+    
+    const messageForTemplate = draft.trim()
+      ? draft.trim()
+      : state.message.trim()
       ? state.message.trim()
       : "We are exploring an opportunity that looks aligned with your background.";
 
     if (!serviceId || !templateId || !publicKey) {
-      const payload = buildEmailBody();
+      const payload = draft.trim() ? draft : buildEmailBody();
       copyToClipboard(payload);
       toast.info("Email service not configured. Message copied to clipboard.");
       setSubmitting(false);
@@ -180,7 +206,7 @@ export function ContactSection({
       toast.success("Message sent successfully!");
       setPreviewOpen(false);
     } catch {
-      const payload = buildEmailBody();
+      const payload = draft.trim() ? draft : buildEmailBody();
       copyToClipboard(payload);
       toast.error("Failed to send. Message copied to clipboard instead.");
       setPreviewOpen(false);
@@ -188,12 +214,11 @@ export function ContactSection({
       setSubmitting(false);
     }
   };
-  
-  const emailBody = useMemo(() => buildEmailBody(), []);
 
   return (
     <>
       <section
+        ref={formTopRef}
         aria-labelledby="contact-form-heading"
         className="surface-soft space-y-4 p-5 md:p-6"
       >
@@ -217,6 +242,7 @@ export function ContactSection({
                 <span className="text-red-500 dark:text-red-400">*</span>
               </Label>
               <Input
+                ref={nameInputRef}
                 id="contact-name"
                 name="contact-name"
                 autoComplete="name"
@@ -372,9 +398,11 @@ export function ContactSection({
       <EmailPreviewDialog
         open={previewOpen}
         onOpenChange={setPreviewOpen}
-        emailBody={emailBody}
+        draft={draft}
+        onDraftChange={setDraft}
         submitting={submitting}
-        onEdit={() => setPreviewOpen(false)}
+        copied={draftCopied}
+        onCopyDraft={handleCopyDraft}
         onConfirmSend={handleConfirmSend}
       />
     </>
