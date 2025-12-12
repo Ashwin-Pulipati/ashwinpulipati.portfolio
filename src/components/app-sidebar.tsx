@@ -6,6 +6,7 @@ import { NAV_ITEMS } from "@/config/nav";
 
 import { NavMain } from "@/components/sidebar/nav-main";
 import { NavFooter } from "@/components/sidebar/nav-footer";
+import { NavMainSkeleton } from "@/components/sidebar/nav-main-skeleton";
 
 import {
   Sidebar,
@@ -14,7 +15,6 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { NavMainSkeleton } from "./sidebar/nav-main-skeleton";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -40,6 +40,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       }),
     [pathname]
   );
+  
+  const NAV_FALLBACK = React.useMemo(() => <NavMainSkeleton />, []);
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -48,7 +50,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <React.Suspense fallback={<NavMainSkeleton />}>
+        <React.Suspense fallback={NAV_FALLBACK}>
           <NavMain items={mappedItems} />
         </React.Suspense>
       </SidebarContent>
