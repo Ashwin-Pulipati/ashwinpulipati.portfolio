@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/Ashwin-Pulipati/ashwinpulipati.portfolio">
-    <img src="public/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/logo.png" alt="Logo" width="120" height="120">
   </a>
 
   <h3 align="center">Ashwin Pulipati's Portfolio</h3>
