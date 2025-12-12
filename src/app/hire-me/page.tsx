@@ -418,10 +418,7 @@ function ContactSection({
                 }
               />
               {errors.name && (
-                <p
-                  id="contact-name-error"
-                  className="text-xs text-destructive"
-                >
+                <p id="contact-name-error" className="text-xs text-destructive">
                   {errors.name}
                 </p>
               )}
@@ -443,10 +440,7 @@ function ContactSection({
                 aria-describedby={errors.email ? "work-email-error" : undefined}
               />
               {errors.email && (
-                <p
-                  id="work-email-error"
-                  className="text-xs text-destructive"
-                >
+                <p id="work-email-error" className="text-xs text-destructive">
                   {errors.email}
                 </p>
               )}
@@ -525,7 +519,7 @@ function ContactSection({
                 onClick={handleCopyOnly}
                 className="w-full sm:w-auto"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 justify-center">
                   {justCopied ? (
                     <Check className="h-4 w-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
                   ) : (
@@ -542,7 +536,7 @@ function ContactSection({
                 disabled={submitting}
                 className="w-full sm:w-auto"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 justify-center">
                   <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>Preview &amp; Send</span>
                   <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />

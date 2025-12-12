@@ -385,10 +385,11 @@ function ExpertiseIntro() {
             asChild
             className="w-full md:w-auto"
           >
-            <Link href="/hire-me" aria-label="Work together on your product">
+            <Link href="/hire-me" aria-label="Work together on your product" className="flex items-center gap-2 justify-center">
               <span className="text-xs md:text-sm">
                 Hire me for your next build
               </span>
+              <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             </Link>
           </Button>
         </div>
