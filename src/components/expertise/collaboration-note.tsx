@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -29,8 +29,13 @@ export function CollaborationNote() {
       </div>
 
       <Button jellyTone="ghost" size="sm" asChild className="w-full md:w-auto">
-        <Link href="/experience" aria-label="View detailed experience timeline">
+        <Link
+          href="/experience"
+          aria-label="View detailed experience timeline"
+          className="flex items-center gap-2 justify-center"
+        >
           <span className="text-xs md:text-sm">View experience timeline</span>
+          <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         </Link>
       </Button>
     </section>
